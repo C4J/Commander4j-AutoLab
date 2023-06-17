@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config name="AutoLab">
+    
+    <debug suppressLabelPrint="false" suppressOutputMessage="false"/>
+    
+    <watchDog port="8000"/>
+    
+    <email enabled="false"/>
+    
+    <updateURL>file:/Users/dave/Commander4j/Distribution/builds/development/java11/b5AutoLab/main/updates.xml</updateURL>
+    <updateMode>MANUAL</updateMode>
+    
+    <!-- Folders -->
+    
+    <paths>
+        <labelSync path="/Applications/Commander4j/labels" frequency="120"/>
+        <dataSet path="/Applications/Commander4j/xml/interface/output/Auto Labeller"/>
+        <output path="/Applications/Commander4j/xml/interface/input/Production Declaration"/>
+    </paths>
+    
+    <!-- Label Quantities -->
+    
+    <labels>
+        <pallet perPrint="2" total="2" field = "DESCRIPTION" criteria=""/>
+        <semiPallet perPrint="2" total="2" field = "DESCRIPTION" criteria=" SEMIP"/>
+    </labels>
+    
+    <!-- Customer Specific Batch Formats -->
+    
+    <batchFormats>
+        <customer id="SELF" pattern="{YEAR1}{JULIAN_DAY}{PROCESS_ORDER}"/>
+    </batchFormats>
+    
+    <!-- Copy of some System Keys normally read from database (jdbc) -->
+    
+    <controls>
+        <system key="HOST REF" value="VALIVE"/>
+        <system key="PLANT" value="0925"/>
+        <system key="BATCH FORMAT" value="{YEAR1}{JULIAN_DAY}{PROCESS_ORDER}"/>
+        <system key="BATCH EXPIRY TIME" value="-"/>     
+        <system key="LABEL_HEADER_COMMENT" value="Free format text"/>
+        <system key="EXPIRY DATE MODE" value="SSCC"/>
+        <system key="SSCC AUTO CONFIRM" value="Y"/>
+    </controls>
+    
+    <labelary enabled="true">
+    	<url>http://api.labelary.com/v1/printers/8dpmm/labels/6x9/0/</url>
+    </labelary>
+    
+    <productionLines>
+        
+        <!-- CETEC 2 -->
+        
+        <productionLine name="CETEC 2" enabled="Y"> 
+            <modbus name="ADAM-6050">
+                <ipAddress>10.0.0.30</ipAddress>
+                <portNumber>502</portNumber>
+                <coilAddress>1</coilAddress>
+                <timeout>4000</timeout>
+                <coilTriggerValue>true</coilTriggerValue>
+            </modbus>
+            <printer name="CETEC 2"/>
+            <SSCC filename="CETEC 2.xml"/>
+        </productionLine>
+        
+        <!-- CETEC 4 -->
+        
+       <productionLine name="CETEC 4" enabled="N"> 
+            <modbus name="ADAM-6050">
+                <ipAddress>10.0.0.30</ipAddress>
+                <portNumber>502</portNumber>
+                <coilAddress>2</coilAddress>
+                <timeout>4000</timeout>
+                <coilTriggerValue>true</coilTriggerValue>
+            </modbus> 
+            <printer name="CETEC 4"/>
+            <SSCC filename="CETEC 4.xml"/>
+        </productionLine>-->
+        
+        <!-- CETEC 5 -->
+       
+        <productionLine name="CETEC 5" enabled="N"> 
+            <modbus name="ADAM-6050">
+                <ipAddress>10.0.0.30</ipAddress>
+                <portNumber>502</portNumber>
+                <coilAddress>3</coilAddress>
+                <timeout>4000</timeout>
+                <coilTriggerValue>true</coilTriggerValue>
+            </modbus>    
+            <printer name="CETEC 5"/>
+            <SSCC filename="CETEC 5.xml"/>
+        </productionLine>-->
+        
+        <!-- CETEC 6 -->
+        
+       <productionLine name="CETEC 6" enabled="N"> 
+            <modbus name="ADAM-6050">
+                <ipAddress>10.0.0.30</ipAddress>
+                <portNumber>502</portNumber>
+                <coilAddress>4</coilAddress>
+                <timeout>4000</timeout>
+                <coilTriggerValue>true</coilTriggerValue>
+            </modbus>  
+            <printer name="CETEC 6"/>
+            <SSCC filename="CETEC 6.xml"/>
+        </productionLine>-->
+        
+    </productionLines>
+    
+    <!-- Alias field names so we can use unmodified .lbl templayte file -->  
+    
+    <fieldNamesLookup>
+         <fieldName csv="MATERIAL_DESCRIPTION" db="DESCRIPTION"/>
+         <fieldName csv="PROD_EAN" db="EAN"/>
+         <fieldName csv="PROD_VARIANT" db="VARIANT"/>
+         <fieldName csv="PROD_UOM" db="UOM"/>
+         <fieldName csv="PROD_QUANTITY" db="QUANTITY"/>
+         <fieldName csv="DATE_OF_MANUFACTURE" db="DATE_CREATED"/>
+
+    </fieldNamesLookup>
+        
+    <!-- Make unmodified copy of Quantity for use in ProdDec XML -->   
+    
+     <clone>
+         <field from="QUANTITY" to="QUANTITY_DECIMALS"/>
+     </clone>   
+     
+    <!-- Overide format of Quantity so we can use in ZPL -->   
+    
+    <formats>
+        <field name="QUANTITY" format="0000"/>
+        <field name="BASE_QUANTITY" format="0000"/>
+    </formats>
+    
+</config>
