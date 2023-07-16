@@ -3,12 +3,12 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. --><project basedir="." default="build" name="b5AutoLab">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="b6AutoLab">
     <property environment="env"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="11"/>
-    <property name="source" value="11"/>
-    <path id="b5AutoLab.classpath">
+    <property name="target" value="17"/>
+    <property name="source" value="17"/>
+    <path id="b6AutoLab.classpath">
         <pathelement location="bin"/>
         <pathelement location="lib/modbus/EasyModbusJavaClient.jar"/>
         <pathelement location="lib/opencsv/commons-beanutils-1.9.4.jar"/>
@@ -26,7 +26,7 @@
         <pathelement location="lib/apache/commons-io-2.13.0.jar"/>
     </path>
     <path id="run.StartStop.classpath">
-        <path refid="b5AutoLab.classpath"/>
+        <path refid="b6AutoLab.classpath"/>
         <pathelement location="lib/modbus"/>
         <pathelement location="lib/modbus/EasyModbusJavaClient.jar"/>
         <pathelement location="lib/opencsv/commons-beanutils-1.9.4.jar"/>
@@ -62,7 +62,7 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="b5AutoLab.classpath"/>
+            <classpath refid="b6AutoLab.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>

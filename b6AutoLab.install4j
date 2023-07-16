@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="10.0.5" transformSequenceNumber="10">
+<install4j version="10.0.6" transformSequenceNumber="10">
   <directoryPresets config="./images/Icons/AutoLab4j_Icons" />
-  <application name="Commander4j AutoLab" applicationId="8985-6673-6807-0058" mediaDir="../../../Distribution/java11/b5autolab4j" shortName="AutoLab" publisher="David Garratt" publisherWeb="http://www.commander4j.com" version="2.13" allPathsRelative="true" macVolumeId="c0f86b3fb8cdcdfe" javaMinVersion="11" javaMaxVersion="11">
+  <application name="Commander4j AutoLab" applicationId="8985-6673-6807-0058" mediaDir="../../../Distribution/java17/b6autolab4j" shortName="AutoLab" publisher="David Garratt" publisherWeb="http://www.commander4j.com" version="3.00" allPathsRelative="true" macVolumeId="c0f86b3fb8cdcdfe" javaMinVersion="17" javaMaxVersion="17">
     <languages skipLanguageSelection="true">
       <additionalLanguages>
         <language id="nl" />
@@ -14,7 +14,7 @@
         <language id="es" />
       </additionalLanguages>
     </languages>
-    <jreBundles jdkProviderId="Zulu" release="11/11.0.19" />
+    <jreBundles jdkProviderId="Zulu" release="17/latest" />
   </application>
   <files globalExcludeSuffixes="dirClean.ok,.DS_Store">
     <mountPoints>
