@@ -13,8 +13,8 @@
 	<classpathentry kind="lib" path="lib/opencsv/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/opencsv/commons-text-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/opencsv/opencsv-5.2.jar"/>
-	<classpathentry kind="lib" path="lib/apache/log4j-api-2.17.1.jar"/>
-	<classpathentry kind="lib" path="lib/apache/log4j-core-2.17.1.jar"/>
+	<classpathentry kind="lib" path="lib/apache/log4j-api-2.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/apache/log4j-core-2.20.0.jar"/>
 	<classpathentry kind="lib" path="lib/mail/javax.mail.jar"/>
 	<classpathentry kind="lib" path="lib/mail/commons-email-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/devonly/i4jruntime.jar"/>

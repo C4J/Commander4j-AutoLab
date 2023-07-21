@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="10.0.6" transformSequenceNumber="10">
-  <directoryPresets config="./images/Icons/AutoLab4j_Icons" />
-  <application name="Commander4j AutoLab" applicationId="8985-6673-6807-0058" mediaDir="../../../Distribution/java17/b6autolab4j" shortName="AutoLab" publisher="David Garratt" publisherWeb="http://www.commander4j.com" version="3.00" allPathsRelative="true" macVolumeId="c0f86b3fb8cdcdfe" javaMinVersion="17" javaMaxVersion="17">
+  <directoryPresets config="./running" />
+  <application name="Commander4j AutoLab" applicationId="8985-6673-6807-0058" mediaDir="../../../Distribution/java17/b6autolab4j" shrinkRuntime="false" shortName="AutoLab" publisher="David Garratt" publisherWeb="http://www.commander4j.com" version="3.01" allPathsRelative="true" macVolumeId="c0f86b3fb8cdcdfe" javaMinVersion="17" javaMaxVersion="17">
     <languages skipLanguageSelection="true">
       <additionalLanguages>
         <language id="nl" />
@@ -10,13 +10,12 @@
         <language id="hu" />
         <language id="it" />
         <language id="pl" />
-        <language id="pt" />
         <language id="es" />
       </additionalLanguages>
     </languages>
-    <jreBundles jdkProviderId="Zulu" release="17/latest" />
+    <jreBundles jdkProviderId="Zulu" release="17/17.0.7" />
   </application>
-  <files globalExcludeSuffixes="dirClean.ok,.DS_Store">
+  <files globalExcludeSuffixes="dirClean.ok,.DS_Store" defaultOverwriteMode="1" defaultUninstallMode="2">
     <mountPoints>
       <mountPoint id="58" location="interface" />
       <mountPoint id="59" location="interface/input" />
@@ -24,7 +23,6 @@
       <mountPoint id="61" location="interface/output" />
       <mountPoint id="62" location="interface/output/ProdDec" />
       <mountPoint id="30" location="labels" />
-      <mountPoint id="31" location="lib" />
       <mountPoint id="32" location="logs" />
       <mountPoint id="33" location="remote_dataset" />
       <mountPoint id="34" location="remote_labels" />
@@ -35,6 +33,8 @@
       <mountPoint id="37" location="licences" />
       <mountPoint id="38" location="layout" />
       <mountPoint id="39" location="labelary" />
+      <mountPoint id="31" location="lib" />
+      <mountPoint id="63" location="running" />
       <mountPoint id="24" />
     </mountPoints>
     <entries>
@@ -49,11 +49,6 @@
         </exclude>
       </dirEntry>
       <dirEntry mountPoint="30" file="./labels" overwriteMode="0" uninstallMode="1" overrideOverwriteMode="true" overrideUninstallMode="true" subDirectory="labels">
-        <exclude>
-          <entry location=".DS_Store" />
-        </exclude>
-      </dirEntry>
-      <dirEntry mountPoint="31" file="./lib" overwriteMode="1" uninstallMode="2" overrideOverwriteMode="true" overrideUninstallMode="true" subDirectory="lib">
         <exclude>
           <entry location=".DS_Store" />
         </exclude>
@@ -82,6 +77,8 @@
           <entry location=".DS_Store" />
         </exclude>
       </dirEntry>
+      <dirEntry mountPoint="31" file="./lib" overwriteMode="1" uninstallMode="2" overrideFileMode="true" overrideOverwriteMode="true" overrideUninstallMode="true" subDirectory="lib" overrideDirMode="true" />
+      <dirEntry mountPoint="63" file="./running/example" overwriteMode="1" uninstallMode="2" overrideOverwriteMode="true" overrideUninstallMode="true" subDirectory="example" />
       <fileEntry mountPoint="24" file="./autolab4j.jar" overwriteMode="1" uninstallMode="2" overrideOverwriteMode="true" overrideUninstallMode="true" />
       <fileEntry mountPoint="24" file="./start_autolab4j.sh" overwriteMode="1" uninstallMode="2" overrideOverwriteMode="true" overrideUninstallMode="true" />
       <fileEntry mountPoint="24" file="./start_autolab4j.cmd" overwriteMode="1" uninstallMode="2" overrideOverwriteMode="true" overrideUninstallMode="true" />
@@ -91,7 +88,7 @@
   <launchers>
     <launcher name="autolab4j_startup" id="44" icnsFile="./images/Icons/AutoLab4j_Icons/MyIcon.icns">
       <executable name="autolab4j_startup" iconSet="true" iconFile="./images/Icons/AutoLab4j_Icons/icon.ico" executableMode="gui" singleInstance="true" />
-      <java mainClass="com.commander4j.autolab.StartStop">
+      <java mainClass="com.commander4j.autolab.StartStop" vmParameters="-Dlog4j.configurationFile=./xml/config/log4j2.xml -Dfile.encoding=Cp1252">
         <classPath>
           <archive location="autolab4j.jar" failOnError="false" />
         </classPath>
