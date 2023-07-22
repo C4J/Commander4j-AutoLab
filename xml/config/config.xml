@@ -43,6 +43,8 @@
         <system key="SSCC AUTO CONFIRM" value="Y"/>
     </controls>
     
+    <!-- URL of Internet Web Service used to display label on screen -->
+    
     <labelary enabled="true">
     	<url>http://api.labelary.com/v1/printers/8dpmm/labels/6x9/0/</url>
     </labelary>
@@ -50,10 +52,10 @@
     <productionLines>
         
         <!-- CETEC 2 -->
-        
-        <productionLine name="CETEC 2" enabled="Y"> 
+        <!-- CAMBIAR LA IP DEL ADAM > -->
+        <productionLine name="CETEC 2" enabled="N"> 
             <modbus name="ADAM-6050">
-                <ipAddress>10.0.0.30</ipAddress>
+                <ipAddress>192.168.3.11</ipAddress>
                 <portNumber>502</portNumber>
                 <coilAddress>1</coilAddress>
                 <timeout>4000</timeout>
@@ -67,56 +69,54 @@
         
        <productionLine name="CETEC 4" enabled="N"> 
             <modbus name="ADAM-6050">
-                <ipAddress>10.0.0.30</ipAddress>
+                <ipAddress>192.168.3.10</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>2</coilAddress>
+                <coilAddress>1</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus> 
             <printer name="CETEC 4"/>
             <SSCC filename="CETEC 4.xml"/>
-        </productionLine>-->
+        </productionLine>
         
         <!-- CETEC 5 -->
        
-        <productionLine name="CETEC 5" enabled="N"> 
+        <productionLine name="CETEC 5" enabled="Y"> 
             <modbus name="ADAM-6050">
-                <ipAddress>10.0.0.30</ipAddress>
+                <ipAddress>10.17.133.229</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>3</coilAddress>
+                <coilAddress>1</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus>    
             <printer name="CETEC 5"/>
             <SSCC filename="CETEC 5.xml"/>
-        </productionLine>-->
+        </productionLine>
         
         <!-- CETEC 6 -->
         
        <productionLine name="CETEC 6" enabled="N"> 
             <modbus name="ADAM-6050">
-                <ipAddress>10.0.0.30</ipAddress>
+                <ipAddress>192.168.1.62</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>4</coilAddress>
+                <coilAddress>3</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus>  
             <printer name="CETEC 6"/>
             <SSCC filename="CETEC 6.xml"/>
-        </productionLine>-->
+        </productionLine>
         
     </productionLines>
     
     <!-- Alias field names so we can use unmodified .lbl templayte file -->  
     
     <fieldNamesLookup>
-         <fieldName csv="MATERIAL_DESCRIPTION" db="DESCRIPTION"/>
-         <fieldName csv="PROD_EAN" db="EAN"/>
-         <fieldName csv="PROD_VARIANT" db="VARIANT"/>
-         <fieldName csv="PROD_UOM" db="UOM"/>
-         <fieldName csv="PROD_QUANTITY" db="QUANTITY"/>
-         <fieldName csv="DATE_OF_MANUFACTURE" db="DATE_CREATED"/>
-
+        <fieldName csv="MATERIAL_DESCRIPTION" db="DESCRIPTION"/>
+        <fieldName csv="PROD_EAN" db="EAN"/>
+        <fieldName csv="PROD_UOM" db="UOM"/>
+        <fieldName csv="PROD_QUANTITY" db="QUANTITY"/>
+        <fieldName csv="DATE_OF_MANUFACTURE" db="DATE_CREATED"/>
     </fieldNamesLookup>
         
     <!-- Make unmodified copy of Quantity for use in ProdDec XML -->   
