@@ -298,8 +298,8 @@ public class DataSet extends Thread
 				{
 					if (value.contains(AutoLab.config.getPalletCriteria()) || (AutoLab.config.getPalletCriteria().equals("")))
 					{
-						dataMap.put("LABELS_PER_PRINT", AutoLab.config.getPalletPerPrint());
-						dataMap.put("LABELS_PER_PALLET", AutoLab.config.getPalletTotal());
+						dataMap.put("SSCC_PER_PALLET", AutoLab.config.getSSCCPerPallet());
+						dataMap.put("LABELS_PER_SSCC", AutoLab.config.getLabelsPerSSCC());
 					}
 				}
 
@@ -307,8 +307,8 @@ public class DataSet extends Thread
 				{
 					if (value.contains(AutoLab.config.getSemiPalletCriteria()) || (AutoLab.config.getSemiPalletCriteria().equals("")))
 					{
-						dataMap.put("LABELS_PER_PRINT", AutoLab.config.getSemiPalletPerPrint());
-						dataMap.put("LABELS_PER_PALLET", AutoLab.config.getSemiPalletTotal());
+						dataMap.put("SSCC_PER_PALLET", AutoLab.config.getSSCCPerSemiPallet());
+						dataMap.put("LABELS_PER_SSCC", AutoLab.config.getLabelsPerSemiSSCC());
 					}
 				}
 

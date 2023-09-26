@@ -21,8 +21,8 @@
     <!-- Label Quantities -->
     
     <labels>
-        <pallet perPrint="2" total="2" field = "DESCRIPTION" criteria=""/>
-        <semiPallet perPrint="2" total="2" field = "DESCRIPTION" criteria=" SEMIP"/>
+        <pallet ssccPerPallet="1" labelsPerSSCC="2" field = "DESCRIPTION" criteria=""/>
+        <semiPallet ssccPerPallet="2" labelsPerSSCC="2" field = "DESCRIPTION" criteria=" SEMIP"/>
     </labels>
     
     <!-- Customer Specific Batch Formats -->
@@ -55,9 +55,9 @@
         <!-- CAMBIAR LA IP DEL ADAM > -->
         <productionLine name="CETEC 2" enabled="N"> 
             <modbus name="ADAM-6050">
-                <ipAddress>192.168.3.11</ipAddress>
+                <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>1</coilAddress>
+                <coilAddress>2</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus>
@@ -69,9 +69,9 @@
         
        <productionLine name="CETEC 4" enabled="N"> 
             <modbus name="ADAM-6050">
-                <ipAddress>192.168.3.10</ipAddress>
+                <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>1</coilAddress>
+                <coilAddress>4</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus> 
@@ -81,11 +81,11 @@
         
         <!-- CETEC 5 -->
        
-        <productionLine name="CETEC 5" enabled="Y"> 
+        <productionLine name="CETEC 5" enabled="N"> 
             <modbus name="ADAM-6050">
                 <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>1</coilAddress>
+                <coilAddress>5</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus>    
@@ -95,11 +95,11 @@
         
         <!-- CETEC 6 -->
         
-       <productionLine name="CETEC 6" enabled="N"> 
+       <productionLine name="CETEC 6" enabled="Y"> 
             <modbus name="ADAM-6050">
-                <ipAddress>192.168.1.62</ipAddress>
+                <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>3</coilAddress>
+                <coilAddress>6</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
             </modbus>  

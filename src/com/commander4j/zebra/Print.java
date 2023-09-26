@@ -26,6 +26,7 @@ public class Print extends Thread
 	private String lastMessage = "";
 	private Logger logger = org.apache.logging.log4j.LogManager.getLogger((Print.class));
 	private boolean firstError = true;
+	private PrintWriter outToServer;
 
 	public Print(String uuid, String name)
 	{
@@ -177,7 +178,7 @@ public class Print extends Thread
 
 							this.clientSocket = new Socket(this.ipAddress, this.portNumber);
 
-							PrintWriter outToServer = new PrintWriter(clientSocket.getOutputStream());
+							outToServer = new PrintWriter(clientSocket.getOutputStream());
 
 							logger.debug("<<<-----------------------------)>>");
 							logger.debug("writeBytes start of data stream");
@@ -220,6 +221,19 @@ public class Print extends Thread
 								logger.debug("Error Sending data to printer : " + e.getLocalizedMessage());
 								firstError = false;
 							}
+						}
+						finally
+						{
+							if (isDataReady())
+							{
+							outToServer.flush();
+							
+							outToServer.close();
+							}
+							
+							setDataReady(false);
+							
+							outToServer= null;
 						}
 					}
 				}

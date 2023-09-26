@@ -28,12 +28,12 @@ public class Config
 	private boolean suppress_Label_Print = false;
 	private boolean suppress_Output_Message = false;
 	private boolean emailEnabled = false;
-	private String PalletPerPrint = "2";
-	private String PalletTotal = "2";
+	private String SSCCPerPallet = "2";
+	private String LabelsPerSSCC = "2";
 	private String PalletCriteria = "";
 	private String PalletCriteriaField = "";
-	private String SemiPalletPerPrint = "2";
-	private String SemiPalletTotal = "4";
+	private String SSCCPerSemiPallet = "2";
+	private String LabelsPerSemiSSCC = "4";
 	private String SemiPalletCriteria = "";
 	private String SemiPalletCriteriaField = "";
 	private JUtility util = new JUtility();
@@ -135,11 +135,11 @@ public class Config
 		setOutputPath(util.formatPath(xmlDoc.findXPath("/config/paths/output/@path")));
 		logger.debug("       - Output Path                 [" + getOutputPath() + "]");
 		
-		setPalletPerPrint(xmlDoc.findXPath("/config/labels/pallet/@perPrint"));
-		logger.debug("       - PALLET Per Print            [" + getPalletPerPrint() + "]");
+		setSSCCPerPallet(xmlDoc.findXPath("/config/labels/pallet/@ssccPerPallet"));
+		logger.debug("       - SSCC Per Pallet            [" + getSSCCPerPallet() + "]");
 		
-		setPalletTotal(xmlDoc.findXPath("/config/labels/pallet/@total"));
-		logger.debug("       - PALLET Print Total          [" + getPalletTotal() + "]");
+		setLabelsPerSSCC(xmlDoc.findXPath("/config/labels/pallet/@labelsPerSSCC"));
+		logger.debug("       - Labels Per SSCC            [" + getLabelsPerSSCC() + "]");
 		
 		setPalletCriteriaField(xmlDoc.findXPath("/config/labels/pallet/@field"));
 		logger.debug("       - PALLET Print Criteria Field [" + getPalletCriteriaField() + "]");
@@ -147,11 +147,11 @@ public class Config
 		setPalletCriteria(xmlDoc.findXPath("/config/labels/pallet/@criteria"));
 		logger.debug("       - PALLET Print Criteria       [" + getPalletCriteria() + "]");
 		
-		setSemiPalletPerPrint(xmlDoc.findXPath("/config/labels/semiPallet/@perPrint"));
-		logger.debug("       - SEMI PALLET Per Print       [" + getSemiPalletPerPrint() + "]");
+		setSSCCPerSemiPallet(xmlDoc.findXPath("/config/labels/semiPallet/@ssccPerPallet"));
+		logger.debug("       - SEMI PALLET Per Print       [" + getSSCCPerSemiPallet() + "]");
 		
-		setSemiPalletTotal(xmlDoc.findXPath("/config/labels/semiPallet/@total"));
-		logger.debug("       - SEMI PALLET Print Total     [" + getSemiPalletTotal() + "]");
+		setLabelsPerSemiSSCC(xmlDoc.findXPath("/config/labels/semiPallet/@labelsPerSSCC"));
+		logger.debug("       - SEMI PALLET Print Total     [" + getLabelsPerSemiSSCC() + "]");
 		
 		setSemiPalletCriteriaField(xmlDoc.findXPath("/config/labels/semiPallet/@field"));
 		logger.debug("       - SEMI PALLET Print Criteria  [" + getSemiPalletCriteriaField() + "]");
@@ -484,44 +484,44 @@ public class Config
 		this.path = path;
 	}
 
-	public String getPalletPerPrint()
+	public String getSSCCPerPallet()
 	{
-		return PalletPerPrint;
+		return SSCCPerPallet;
 	}
 
-	public void setPalletPerPrint(String palletPerPrint)
+	public void setSSCCPerPallet(String palletPerPrint)
 	{
-		PalletPerPrint = palletPerPrint;
+		SSCCPerPallet = palletPerPrint;
 	}
 
-	public String getPalletTotal()
+	public String getLabelsPerSSCC()
 	{
-		return PalletTotal;
+		return LabelsPerSSCC;
 	}
 
-	public void setPalletTotal(String palletTotal)
+	public void setLabelsPerSSCC(String palletTotal)
 	{
-		PalletTotal = palletTotal;
+		LabelsPerSSCC = palletTotal;
 	}
 
-	public String getSemiPalletPerPrint()
+	public String getSSCCPerSemiPallet()
 	{
-		return SemiPalletPerPrint;
+		return SSCCPerSemiPallet;
 	}
 
-	public void setSemiPalletPerPrint(String semiPalletPerPrint)
+	public void setSSCCPerSemiPallet(String semiPalletPerPrint)
 	{
-		SemiPalletPerPrint = semiPalletPerPrint;
+		SSCCPerSemiPallet = semiPalletPerPrint;
 	}
 
-	public String getSemiPalletTotal()
+	public String getLabelsPerSemiSSCC()
 	{
-		return SemiPalletTotal;
+		return LabelsPerSemiSSCC;
 	}
 
-	public void setSemiPalletTotal(String semiPalletTotal)
+	public void setLabelsPerSemiSSCC(String semiPalletTotal)
 	{
-		SemiPalletTotal = semiPalletTotal;
+		LabelsPerSemiSSCC = semiPalletTotal;
 	}
 
 

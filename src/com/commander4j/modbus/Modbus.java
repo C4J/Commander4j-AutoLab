@@ -30,7 +30,6 @@ public class Modbus extends Thread
 	private JWait wait = new JWait();
 	private String uuid = "";
 	private Logger logger = org.apache.logging.log4j.LogManager.getLogger((Modbus.class));
-	private int labelCount = 0;
 	boolean inProgress = false;
 	private String ssccSequenceFilename = "";
 	private String sscc = "";
@@ -195,7 +194,7 @@ public class Modbus extends Thread
 
 					try
 					{
-						currentValue = modbusClient.ReadCoils(address-1, 1)[0];
+						currentValue = modbusClient.ReadCoils(address - 1, 1)[0];
 
 						if (currentValue != previousValue)
 						{
@@ -214,34 +213,7 @@ public class Modbus extends Thread
 									{
 										AutoLab.setPrintProperties(getUuid(), AutoLab.getDataSet_Field(getUuid(), "IP_ADDRESS"), Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "PORT")));
 
-										if (labelCount == 0)
-										{
-											sscc = AutoLab.get_SSCC_Sequence(getSsccSequenceFilename());
-											AutoLab.setDataSet_FieldValue(uuid, "SSCC", sscc);
 
-											// Get current date and time
-											caldate = Calendar.getInstance();
-
-											batchNo = batchNumber.getDefaultBatchNumber(uuid, caldate);
-											AutoLab.setDataSet_FieldValue(uuid, "BATCH_NUMBER", batchNo);
-
-											// Convert current date time to
-											// String in correct format and
-											// store back into HashMap
-											AutoLab.setDataSet_FieldValue(uuid, "DATE_OF_MANUFACTURE", utils.getFormattedCSVCalendarString(caldate));
-
-											expiryDate = utils.calcBBE(caldate, Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "SHELF_LIFE")), AutoLab.getDataSet_Field(getUuid(), "SHELF_LIFE_UOM"), AutoLab.getDataSet_Field(getUuid(), "SHELF_LIFE_RULE"));
-											expiryString = utils.getFormattedCSVCalendarString(expiryDate);
-											AutoLab.setDataSet_FieldValue(uuid, "EXPIRY_DATE", expiryString);
-
-											logger.debug("[" + getUuid() + "] {" + getName() + "} " + "--------------------------------------------------------------------------------------------------------------");
-											logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SSCC                 = " + sscc + " <<NEW>>");
-										}
-										else
-										{
-											logger.debug("[" + getUuid() + "] {" + getName() + "} " + "--------------------------------------------------------------------------------------------------------------");
-											logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SSCC                 = " + sscc + " <<REPEAT>>");
-										}
 
 										// logger.debug("[" + getUuid() + "] {"
 										// + getName() + "} " +
@@ -261,85 +233,114 @@ public class Modbus extends Thread
 										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "IP_ADDRESS (Printer) = " + AutoLab.getDataSet_Field(getUuid(), "IP_ADDRESS"));
 										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "PORT       (Printer) = " + AutoLab.getDataSet_Field(getUuid(), "PORT"));
 										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "LANGUAGE   (Printer) = " + AutoLab.getDataSet_Field(getUuid(), "LANGUAGE"));
-										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "LABELS_PER_PRINT     = " + AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_PRINT"));
-										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "LABELS_PER_PALLET    = " + AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_PALLET"));
+										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SSCC_PER_PALLET      = " + AutoLab.getDataSet_Field(getUuid(), "SSCC_PER_PALLET"));
+										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "LABELS_PER_SSCC      = " + AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_SSCC"));
 
 										logger.debug("[" + getUuid() + "] {" + getName() + "} " + "--------------------------------------------------------------------------------------------------------------");
 
-										int labelsPerPrint = Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_PRINT"));
-										int labelsPerPallet = Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_PALLET"));
+										int SSCCPerPallet = Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "SSCC_PER_PALLET"));
+										int labelsPerSSCC = Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_SSCC"));
 
-										if (labelCount < labelsPerPallet)
+										for (int y = 0; y < SSCCPerPallet; y++)
 										{
-											for (int x = 0; x < labelsPerPrint; x++)
-											{
-												while (AutoLab.isDataReady(getUuid()))
-												{
-													wait.manySec(1);
-													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "Waiting for printer to be ready");
 
-												}
-
-												labelCount++;
-
-												AutoLab.setDataSet_FieldValue(uuid, "LABEL_NO", String.valueOf(labelCount).trim());
-												logger.debug("**********************************************************************************************************************************************************************");
-												logger.debug("[" + getUuid() + "] {" + getName() + "} " + "Printing " + labelCount + " of " + labelsPerPallet + " for Process Order " + AutoLab.getDataSet_Field(getUuid(), "PROCESS_ORDER") + " - SSCC " + sscc);
-												logger.debug("**********************************************************************************************************************************************************************");
-
-												appendNotification(JRes.getText("preparing_label") + " " + (x + 1) + " " + JRes.getText("of") + " " + labelsPerPrint);
-
-												Label label = new Label();
-												String zpl = label.process(uuid);
-
-												AutoLab.set_PrintData(getUuid(), zpl);
+											sscc = AutoLab.get_SSCC_Sequence(getSsccSequenceFilename());
+											AutoLab.setDataSet_FieldValue(uuid, "SSCC", sscc);
+											
 												
-												AutoLab.request_Print(getUuid());
-												
-												AutoLab.set_PreviewData(getUuid(), zpl);
-
-												//* Wait for print thread to confirm its 
-												
-												while (AutoLab.isDataReady(getUuid()))
+												if (y == 0)
 												{
-													try
-													{
-														Thread.sleep(1000);
-														logger.debug("Waiting for confirmation that print is complete.");
-														appendNotification(JRes.getText("wait_for_print_confirmation"));
-													}
-													catch (Exception ex)
-													{
-														break;
-													}
-												}
 
-												if (labelCount == labelsPerPallet)
-												{
-													labelCount = 0;
-													inProgress = false;
+													// Get current date and time
+													caldate = Calendar.getInstance();
 
-													if (AutoLab.isDataReady(getUuid()) == false)
-													{
-														appendNotification(JRes.getText("print_confirmation_received"));
-														logger.debug("Print confirmation received");
-														logger.debug("[" + getUuid() + "] {" + getName() + "} " + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-														logger.debug("[" + getUuid() + "] {" + getName() + "} " + "+++Generate Production Declaration " + sscc + " +++");
-														logger.debug("[" + getUuid() + "] {" + getName() + "} " + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-														prodDec.setUuid(uuid);
-														prodDec.processMessage();
-													}
+													batchNo = batchNumber.getDefaultBatchNumber(uuid, caldate);
+													AutoLab.setDataSet_FieldValue(uuid, "BATCH_NUMBER", batchNo);
+
+													// Convert current date time to
+													// String in correct format and
+													// store back into HashMap
+													AutoLab.setDataSet_FieldValue(uuid, "DATE_OF_MANUFACTURE", utils.getFormattedCSVCalendarString(caldate));
+
+													expiryDate = utils.calcBBE(caldate, Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "SHELF_LIFE")), AutoLab.getDataSet_Field(getUuid(), "SHELF_LIFE_UOM"),
+															AutoLab.getDataSet_Field(getUuid(), "SHELF_LIFE_RULE"));
+													expiryString = utils.getFormattedCSVCalendarString(expiryDate);
+													AutoLab.setDataSet_FieldValue(uuid, "EXPIRY_DATE", expiryString);
+
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "--------------------------------------------------------------------------------------------------------------");
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SSCC                 = " + sscc + " <<NEW>>");
 												}
 												else
 												{
-													inProgress = true;
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "--------------------------------------------------------------------------------------------------------------");
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SSCC                 = " + sscc + " <<REPEAT>>");
+												}
+												
+												appendNotification(JRes.getText("preparing_sscc")+" " + (y + 1) + " " + JRes.getText("of") + " " + SSCCPerPallet);
+												
+												for (int x = 0; x < labelsPerSSCC; x++)
+												{
+													while (AutoLab.isDataReady(getUuid()))
+													{
+														wait.manySec(1);
+														logger.debug("[" + getUuid() + "] {" + getName() + "} " + "Waiting for printer to be ready");
+
+													}
+
+													AutoLab.setDataSet_FieldValue(uuid, "LABEL_NO", String.valueOf(y).trim());
+													logger.debug("**********************************************************************************************************************************************************************");
+													logger.debug(
+															"[" + getUuid() + "] {" + getName() + "} " + "Printing " + y + " of " + SSCCPerPallet + " for Process Order " + AutoLab.getDataSet_Field(getUuid(), "PROCESS_ORDER") + " - SSCC " + sscc);
+													logger.debug("**********************************************************************************************************************************************************************");
+
+													appendNotification(JRes.getText("preparing_label") + " " + (x + 1) + " " + JRes.getText("of") + " " + labelsPerSSCC);
+
+													Label label = new Label();
+													String zpl = label.process(uuid);
+
+													AutoLab.set_PrintData(getUuid(), zpl);
+
+													AutoLab.request_Print(getUuid());
+
+													AutoLab.set_PreviewData(getUuid(), zpl);
+
+													// * Wait for print thread
+													// to
+													// confirm its
+
+													while (AutoLab.isDataReady(getUuid()))
+													{
+														try
+														{
+															Thread.sleep(5000);
+															logger.debug("Waiting for confirmation that print is complete.");
+															appendNotification(JRes.getText("wait_for_print_confirmation"));
+														}
+														catch (Exception ex)
+														{
+															break;
+														}
+													}
+
+												}
+												
+												inProgress = false;
+												
+												if (AutoLab.isDataReady(getUuid()) == false)
+												{
+													appendNotification(JRes.getText("print_confirmation_received"));
+													logger.debug("Print confirmation received");
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "+++Generate Production Declaration " + sscc + " +++");
+													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+													prodDec.setUuid(uuid);
+													prodDec.processMessage();
 												}
 											}
 										}
-
 									}
 								}
-							}
+
 						}
 						Thread.sleep(250);
 					}
