@@ -15,14 +15,15 @@
 	<classpathentry kind="lib" path="lib/opencsv/opencsv-5.2.jar"/>
 	<classpathentry kind="lib" path="lib/apache/log4j-api-2.20.0.jar"/>
 	<classpathentry kind="lib" path="lib/apache/log4j-core-2.20.0.jar"/>
-	<classpathentry kind="lib" path="lib/mail/javax.mail.jar"/>
-	<classpathentry kind="lib" path="lib/mail/commons-email-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/devonly/i4jruntime.jar"/>
 	<classpathentry kind="lib" path="lib/apache/commons-io-2.13.0.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/b5AutoLab/lib/apache/commons-io-2.9.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/mail/javax.activation-1.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/mail/angus-activation-2.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/mail/angus-mail-2.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/mail/jakarta.activation-api-2.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/mail/jakarta.mail-api-2.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

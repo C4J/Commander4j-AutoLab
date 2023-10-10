@@ -5,7 +5,7 @@
     
     <watchDog port="8000"/>
     
-    <email enabled="false"/>
+    <email enabled="true"/>
     
     <updateURL>file:/Users/dave/Commander4j/Distribution/builds/development/java11/b5AutoLab/main/updates.xml</updateURL>
     <updateMode>MANUAL</updateMode>
