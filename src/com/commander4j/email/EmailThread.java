@@ -26,6 +26,7 @@ public class EmailThread extends Thread
 		// logger.debug(getName() + " Thread Shutdown Requested.");
 
 		run = false;
+		AutoLab.emailqueue.shutdown();
 	}
 
 

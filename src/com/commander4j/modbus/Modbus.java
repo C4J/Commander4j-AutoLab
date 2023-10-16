@@ -26,6 +26,7 @@ public class Modbus extends Thread
 	private int portNumber;
 	private int timeOut;
 	private int address;
+	private int semiPalletAddress;
 	private boolean printOnValue;
 	private JWait wait = new JWait();
 	private String uuid = "";
@@ -42,13 +43,14 @@ public class Modbus extends Thread
 	private ProcDec_XML prodDec = new ProcDec_XML();
 	private String lastMessage = "";
 
-	public Modbus(String uuid, String name, String ipAddress, int portNumber, int timeOut, int address, boolean printOnValue, String ssccSequenceFilename)
+	public Modbus(String uuid, String name, String ipAddress, int portNumber, int timeOut, int address, boolean printOnValue, String ssccSequenceFilename,int semiPalletAddress)
 	{
 		this.uuid = uuid;
 		this.ipAddress = ipAddress;
 		this.portNumber = portNumber;
 		this.timeOut = timeOut;
 		this.address = address;
+		this.semiPalletAddress = semiPalletAddress;
 		this.ssccSequenceFilename = ssccSequenceFilename;
 		this.printOnValue = printOnValue;
 		setName("Modbus " + name + " (" + ipAddress + ") [Coil " + address + "]");
@@ -213,7 +215,23 @@ public class Modbus extends Thread
 									{
 										AutoLab.setPrintProperties(getUuid(), AutoLab.getDataSet_Field(getUuid(), "IP_ADDRESS"), Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "PORT")));
 
-
+										boolean semiPalletCoilValue = modbusClient.ReadCoils(semiPalletAddress - 1, 1)[0];
+										
+										if (semiPalletCoilValue==false)
+										{
+											appendNotification(JRes.getText("SEMIP = false"));
+											AutoLab.setDataSet_FieldValue(getUuid(), "SSCC_PER_PALLET", AutoLab.config.getSSCCPerPallet());
+											AutoLab.setDataSet_FieldValue(getUuid(), "LABELS_PER_SSCC", AutoLab.config.getLabelsPerSSCC());
+										}
+										else
+										{
+											appendNotification(JRes.getText("SEMIP = true"));
+											AutoLab.setDataSet_FieldValue(getUuid(), "SSCC_PER_PALLET", AutoLab.config.getSSCCPerSemiPallet());
+											AutoLab.setDataSet_FieldValue(getUuid(), "LABELS_PER_SSCC", AutoLab.config.getLabelsPerSemiSSCC());
+										}
+										
+										appendNotification(JRes.getText("sscc_per_pallet")+ " " + AutoLab.getDataSet_Field(getUuid(), "SSCC_PER_PALLET"));
+										appendNotification(JRes.getText("labels_per_sscc")+ " " + AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_SSCC"));
 
 										// logger.debug("[" + getUuid() + "] {"
 										// + getName() + "} " +

@@ -46,7 +46,7 @@ public class AutoLab extends Thread
 	public static boolean run = true;
 	public static EmailQueue emailqueue = new EmailQueue();
 	public static WatchDog watchdog;
-	public static String version = "3.10";
+	public static String version = "3.20";
 	private JUtility utils = new JUtility();
 	public static EmailThread emailthread;
 	private TrayIconSystemInfo trayIconSystem = new TrayIconSystemInfo();
@@ -120,7 +120,7 @@ public class AutoLab extends Thread
 
 			ProdLineDefinition prodlinedef0 = me0.getValue();
 			ProdLine prodLine0 = new ProdLine(prodlinedef0.getProdLine_Name(), prodlinedef0.getModbus_Name(), prodlinedef0.getModbus_IPAddress(), Integer.valueOf(prodlinedef0.getModbus_Port()), Integer.valueOf(prodlinedef0.getModbus_Coil_Address()), Integer.valueOf(prodlinedef0.getModbus_Timeout()),
-					Boolean.valueOf(prodlinedef0.getModbus_Coil_Trigger_Value()), prodlinedef0.getPrinter_Name(), config.getDataSetPath(), prodlinedef0.getSscc_Filename());
+					Boolean.valueOf(prodlinedef0.getModbus_Coil_Trigger_Value()), prodlinedef0.getPrinter_Name(), config.getDataSetPath(), prodlinedef0.getSscc_Filename(),Integer.valueOf(prodlinedef0.getSemiPallet_Modbus_Coil_Address()));
 			threadList_ProdLine.put(prodLine0.getUuid(), prodLine0);
 
 			logger.debug("[" + prodLine0.getUuid() + "] Adding Icon to System Tray");

@@ -294,24 +294,6 @@ public class DataSet extends Thread
 
 				dataMap.put(key, value);
 
-				if (key.equals(AutoLab.config.getPalletCriteriaField()))
-				{
-					if (value.contains(AutoLab.config.getPalletCriteria()) || (AutoLab.config.getPalletCriteria().equals("")))
-					{
-						dataMap.put("SSCC_PER_PALLET", AutoLab.config.getSSCCPerPallet());
-						dataMap.put("LABELS_PER_SSCC", AutoLab.config.getLabelsPerSSCC());
-					}
-				}
-
-				if (key.equals(AutoLab.config.getSemiPalletCriteriaField()))
-				{
-					if (value.contains(AutoLab.config.getSemiPalletCriteria()) || (AutoLab.config.getSemiPalletCriteria().equals("")))
-					{
-						dataMap.put("SSCC_PER_PALLET", AutoLab.config.getSSCCPerSemiPallet());
-						dataMap.put("LABELS_PER_SSCC", AutoLab.config.getLabelsPerSemiSSCC());
-					}
-				}
-
 				if (key.equals("CUSTOMER_ID"))
 				{
 					if (AutoLab.config.getCustomerBatchFormat(value).equals(""))

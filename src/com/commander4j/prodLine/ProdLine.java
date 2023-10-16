@@ -21,6 +21,7 @@ public class ProdLine extends Thread
 	private int modbusPortNumber;
 	private int modbusTimeOut;
 	private int modbusCoil;
+	private int semiPalletCoilAddress;
 	private boolean modbusPrintOnValue;
 	private String prodLineName="";
 	private String printerName;
@@ -38,7 +39,7 @@ public class ProdLine extends Thread
 	public JFrameNotifier prodLineNotify;
 	public JFramePreview prodLinePreview;
 	
-	public ProdLine(String prodLineName,String modbusName,String modbusIPAddress,int modbusPortNumber,int modbusCoil,int modbusTimeout,boolean modbusPrintOnValue,String printerName,String remoteDataSetPath,String ssccSequenceFilename)
+	public ProdLine(String prodLineName,String modbusName,String modbusIPAddress,int modbusPortNumber,int modbusCoil,int modbusTimeout,boolean modbusPrintOnValue,String printerName,String remoteDataSetPath,String ssccSequenceFilename,int semiPalletCoilAddress)
 	{
 		this.prodLineName=prodLineName;
 		this.modbusName = modbusName;
@@ -51,6 +52,7 @@ public class ProdLine extends Thread
 		this.remoteDataSetPath = remoteDataSetPath;
 		this.uuid = unique.getUniqueID();
 		this.ssccSequenceFilename = ssccSequenceFilename;
+		this.semiPalletCoilAddress = semiPalletCoilAddress;
 				
 		setName("ProdLine "+prodLineName);	
 		
@@ -156,12 +158,22 @@ public class ProdLine extends Thread
 	{
 		return modbusCoil;
 	}
+	
+	public int getSemiPalletCoil()
+	{
+		return semiPalletCoilAddress;
+	}
 
 	public void setModbusCoil(int modbusAddress)
 	{
 		this.modbusCoil = modbusAddress;
 	}
 
+	public void setSemiPalletCoil(int semiPalletCoilAddress)
+	{
+		this.semiPalletCoilAddress = semiPalletCoilAddress;
+	}
+	
 	public boolean isModbusPrintOnValue()
 	{
 		return modbusPrintOnValue;
@@ -235,7 +247,7 @@ public class ProdLine extends Thread
 		prodLineNotify.appendToMessage(JRes.getText("starting_background_process")+ " "+JRes.getText("printer"));
 		
 		Modbus modbus1;
-		modbus1 = new Modbus(getUuid(),getName()+" "+getModbusName(),getModbusIPAddress(),getModbusPortNumber(),getModbusTimeOut(),getModbusCoil(),isModbusPrintOnValue(),getSsccSequenceFilename());
+		modbus1 = new Modbus(getUuid(),getName()+" "+getModbusName(),getModbusIPAddress(),getModbusPortNumber(),getModbusTimeOut(),getModbusCoil(),isModbusPrintOnValue(),getSsccSequenceFilename(),getSemiPalletCoil());
 		modbus1.start();
 		prodLineNotify.appendToMessage(JRes.getText("starting_background_process")+ " Modbus");
 		

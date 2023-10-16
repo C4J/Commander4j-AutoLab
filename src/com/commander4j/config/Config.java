@@ -30,12 +30,10 @@ public class Config
 	private boolean emailEnabled = false;
 	private String SSCCPerPallet = "2";
 	private String LabelsPerSSCC = "2";
-	private String PalletCriteria = "";
-	private String PalletCriteriaField = "";
+
 	private String SSCCPerSemiPallet = "2";
 	private String LabelsPerSemiSSCC = "4";
-	private String SemiPalletCriteria = "";
-	private String SemiPalletCriteriaField = "";
+
 	private JUtility util = new JUtility();
 	private boolean labelaryEnabled = false;
 	private String labelaryURL = "";
@@ -140,24 +138,12 @@ public class Config
 		
 		setLabelsPerSSCC(xmlDoc.findXPath("/config/labels/pallet/@labelsPerSSCC"));
 		logger.debug("       - Labels Per SSCC            [" + getLabelsPerSSCC() + "]");
-		
-		setPalletCriteriaField(xmlDoc.findXPath("/config/labels/pallet/@field"));
-		logger.debug("       - PALLET Print Criteria Field [" + getPalletCriteriaField() + "]");
-		
-		setPalletCriteria(xmlDoc.findXPath("/config/labels/pallet/@criteria"));
-		logger.debug("       - PALLET Print Criteria       [" + getPalletCriteria() + "]");
-		
+				
 		setSSCCPerSemiPallet(xmlDoc.findXPath("/config/labels/semiPallet/@ssccPerPallet"));
 		logger.debug("       - SEMI PALLET Per Print       [" + getSSCCPerSemiPallet() + "]");
 		
 		setLabelsPerSemiSSCC(xmlDoc.findXPath("/config/labels/semiPallet/@labelsPerSSCC"));
 		logger.debug("       - SEMI PALLET Print Total     [" + getLabelsPerSemiSSCC() + "]");
-		
-		setSemiPalletCriteriaField(xmlDoc.findXPath("/config/labels/semiPallet/@field"));
-		logger.debug("       - SEMI PALLET Print Criteria  [" + getSemiPalletCriteriaField() + "]");
-
-		setSemiPalletCriteria(xmlDoc.findXPath("/config/labels/semiPallet/@criteria"));
-		logger.debug("       - PALLET Print Criteria Field [" + getSemiPalletCriteria() + "]");
 		
 		setLabelaryEnabled(Boolean.valueOf(xmlDoc.findXPath("/config/labelary/@enabled")));
 		logger.debug("Config - Labelary Enabled            [" + isLabelaryEnabled() + "]");
@@ -191,6 +177,9 @@ public class Config
 
 				prodLine.setModbus_Coil_Address(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/coilAddress"));
 				logger.debug("         Modbus Coil          [" + prodLine.getModbus_Coil_Address() + "]");
+				
+				prodLine.setSemiPallet_Modbus_Coil_Address(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/semiPalletCoilAddress"));
+				logger.debug("         semiPallet Coil      [" + prodLine.getSemiPallet_Modbus_Coil_Address() + "]");
 
 				prodLine.setModbus_Timeout(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/timeout"));
 				logger.debug("         Modbus Timeout       [" + prodLine.getModbus_Timeout() + "]");
@@ -363,47 +352,7 @@ public class Config
 		
 		return result;
 	}
-
-	public String getSemiPalletCriteriaField()
-	{
-		return SemiPalletCriteriaField;
-	}
-
-	public void setSemiPalletCriteriaField(String semiPalletCriteriaField)
-	{
-		SemiPalletCriteriaField = semiPalletCriteriaField;
-	}
-
-	public String getPalletCriteriaField()
-	{
-		return PalletCriteriaField;
-	}
-
-	public void setPalletCriteriaField(String palletCriteriaField)
-	{
-		PalletCriteriaField = palletCriteriaField;
-	}
-
-	public String getPalletCriteria()
-	{
-		return PalletCriteria;
-	}
-
-	public void setPalletCriteria(String palletCriteria)
-	{
-		PalletCriteria = palletCriteria;
-	}
-
-	public String getSemiPalletCriteria()
-	{
-		return SemiPalletCriteria;
-	}
-
-	public void setSemiPalletCriteria(String semiPalletCriteria)
-	{
-		SemiPalletCriteria = semiPalletCriteria;
-	}
-
+	
 	public boolean isSuppressLabelPrint()
 	{
 		return suppress_Label_Print;

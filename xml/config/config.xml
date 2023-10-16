@@ -5,7 +5,7 @@
     
     <watchDog port="8000"/>
     
-    <email enabled="true"/>
+    <email enabled="false"/>
     
     <updateURL>file:/Users/dave/Commander4j/Distribution/builds/development/java11/b5AutoLab/main/updates.xml</updateURL>
     <updateMode>MANUAL</updateMode>
@@ -21,8 +21,8 @@
     <!-- Label Quantities -->
     
     <labels>
-        <pallet ssccPerPallet="1" labelsPerSSCC="2" field = "DESCRIPTION" criteria=""/>
-        <semiPallet ssccPerPallet="2" labelsPerSSCC="2" field = "DESCRIPTION" criteria=" SEMIP"/>
+        <pallet ssccPerPallet="1" labelsPerSSCC="2"/>
+        <semiPallet ssccPerPallet="2" labelsPerSSCC="2"/>
     </labels>
     
     <!-- Customer Specific Batch Formats -->
@@ -53,13 +53,14 @@
         
         <!-- CETEC 2 -->
         <!-- CAMBIAR LA IP DEL ADAM > -->
-        <productionLine name="CETEC 2" enabled="N"> 
+        <productionLine name="CETEC 2" enabled="Y"> 
             <modbus name="ADAM-6050">
                 <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>2</coilAddress>
+                <coilAddress>1</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
+                <semiPalletCoilAddress>2</semiPalletCoilAddress>
             </modbus>
             <printer name="CETEC 2"/>
             <SSCC filename="CETEC 2.xml"/>
@@ -71,9 +72,10 @@
             <modbus name="ADAM-6050">
                 <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>4</coilAddress>
+                <coilAddress>3</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
+                <semiPalletCoilAddress>4</semiPalletCoilAddress>
             </modbus> 
             <printer name="CETEC 4"/>
             <SSCC filename="CETEC 4.xml"/>
@@ -88,6 +90,7 @@
                 <coilAddress>5</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
+                <semiPalletCoilAddress>6</semiPalletCoilAddress>
             </modbus>    
             <printer name="CETEC 5"/>
             <SSCC filename="CETEC 5.xml"/>
@@ -95,13 +98,14 @@
         
         <!-- CETEC 6 -->
         
-       <productionLine name="CETEC 6" enabled="Y"> 
+       <productionLine name="CETEC 6" enabled="N"> 
             <modbus name="ADAM-6050">
                 <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
-                <coilAddress>6</coilAddress>
+                <coilAddress>7</coilAddress>
                 <timeout>4000</timeout>
                 <coilTriggerValue>true</coilTriggerValue>
+                <semiPalletCoilAddress>8</semiPalletCoilAddress>
             </modbus>  
             <printer name="CETEC 6"/>
             <SSCC filename="CETEC 6.xml"/>

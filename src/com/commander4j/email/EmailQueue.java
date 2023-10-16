@@ -12,14 +12,15 @@ public class EmailQueue
 	{
 		return queue.size();
 	}
-	
+
 	public synchronized void addToQueue(String distributionID, String subject, String messageText, String filename)
 	{
-		//AutoLab.systemNotify.appendToMessage("Requesting email to distribution list ["+distributionID+"].");
+		// AutoLab.systemNotify.appendToMessage("Requesting email to
+		// distribution list ["+distributionID+"].");
 		Email email = new Email(distributionID, subject, messageText, filename);
 		queue.addLast(email);
 	}
-	
+
 	public synchronized void shutdown()
 	{
 		shutdown = true;
@@ -47,8 +48,8 @@ public class EmailQueue
 		{
 			if (shutdown == false)
 			{
-			Email email = getFromQueue();
-			sendmail.Send(email.distributionID, email.subject, email.messageText, email.filename);
+				Email email = getFromQueue();
+				sendmail.Send(email.distributionID, email.subject, email.messageText, email.filename);
 			}
 
 		}

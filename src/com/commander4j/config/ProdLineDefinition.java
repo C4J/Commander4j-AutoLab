@@ -8,6 +8,7 @@ public class ProdLineDefinition
 	String modbus_IPAddress = "";
 	String modbus_Port = "";
 	String modbus_Coil_Address = "";
+	String semiPallet_modbus_Coil_Address = "";
 	String modbus_Timeout = "";
 	String modbus_Coil_Trigger_Value = "";
 	String printer_Name = "";
@@ -61,6 +62,14 @@ public class ProdLineDefinition
 	public void setModbus_Coil_Address(String modbus_Coil_Address)
 	{
 		this.modbus_Coil_Address = modbus_Coil_Address;
+	}
+	public String getSemiPallet_Modbus_Coil_Address()
+	{
+		return semiPallet_modbus_Coil_Address;
+	}
+	public void setSemiPallet_Modbus_Coil_Address(String semiPallet_modbus_Coil_Address)
+	{
+		this.semiPallet_modbus_Coil_Address = semiPallet_modbus_Coil_Address;
 	}
 	public String getModbus_Timeout()
 	{
