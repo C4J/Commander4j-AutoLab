@@ -7,16 +7,16 @@
     
     <email enabled="false"/>
     
-    <updateURL>file:/Users/dave/Commander4j/Distribution/builds/development/java11/b5AutoLab/main/updates.xml</updateURL>
+    <updateURL>file:/myupdatepath/updates.xml</updateURL>
     <updateMode>MANUAL</updateMode>
     
     <!-- Folders -->
     
     <paths>
-        <labelSync path="/Applications/Commander4j/labels" frequency="120"/>
-        <dataSet path="/Applications/Commander4j/xml/interface/output/Auto Labeller"/>
-        <output path="/Applications/Commander4j/xml/interface/input/Production Declaration"/>
-        <ssccSequence path="/Users/dave/Downloads"/>
+        <labelSync path="./labels" frequency="120"/>
+        <dataSet path="./interface/input/dataset"/>
+        <output path="./interface/output/ProdDec"/>
+        <ssccSequence path="./xml/config/sscc"/>
     </paths>
     
     <!-- Label Quantities -->
