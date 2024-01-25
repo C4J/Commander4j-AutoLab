@@ -24,6 +24,7 @@ public class Config
 	private String labelSyncPath = "";
 	private int labelSyncFrequency=10;
 	private String dataSetPath = "";
+	private String ssccSequencePath = "";
 	private String outputPath = "";
 	private boolean suppress_Label_Print = false;
 	private boolean suppress_Output_Message = false;
@@ -132,6 +133,9 @@ public class Config
 		
 		setOutputPath(util.formatPath(xmlDoc.findXPath("/config/paths/output/@path")));
 		logger.debug("       - Output Path                 [" + getOutputPath() + "]");
+		
+		setSSCSequencePath(util.formatPath(xmlDoc.findXPath("/config/paths/ssccSequence/@path")));
+		logger.debug("       - SSCC Sequence Path          [" + getSSCSequencePath() + "]");
 		
 		setSSCCPerPallet(xmlDoc.findXPath("/config/labels/pallet/@ssccPerPallet"));
 		logger.debug("       - SSCC Per Pallet            [" + getSSCCPerPallet() + "]");
@@ -373,6 +377,29 @@ public class Config
 		this.suppress_Output_Message = suppress_Output_Message;
 	}
 
+	public String getSSCSequencePath()
+	{
+		return ssccSequencePath;
+	}
+
+	public void setSSCSequencePath(String ssccSequencePath)
+	{
+		if (util.replaceNullStringwithBlank(ssccSequencePath).equals(""))
+		{
+			this.ssccSequencePath = System.getProperty("user.dir") + File.separator + "xml" + File.separator + "sscc" + File.separator;
+		}
+		else
+		{
+			this.ssccSequencePath = ssccSequencePath;
+		}
+		
+		if (this.ssccSequencePath.endsWith(File.separator)==false)
+		{
+			this.ssccSequencePath = this.ssccSequencePath+File.separator;
+		}
+
+	}
+	
 	public String getDataSetPath()
 	{
 		return dataSetPath;

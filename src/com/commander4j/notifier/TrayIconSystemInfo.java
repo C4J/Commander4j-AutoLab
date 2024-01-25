@@ -146,6 +146,9 @@ public class TrayIconSystemInfo
 
 		if (SystemTray.isSupported())
 		{
+			
+			menuItemEmailConfig.setEnabled(AutoLab.config.isEmailEnabled());
+			menuItemEmailLogs.setEnabled(AutoLab.config.isEmailEnabled());
 
 			if (isWindows())
 			{

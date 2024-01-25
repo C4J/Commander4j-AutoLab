@@ -16,6 +16,7 @@
         <labelSync path="/Applications/Commander4j/labels" frequency="120"/>
         <dataSet path="/Applications/Commander4j/xml/interface/output/Auto Labeller"/>
         <output path="/Applications/Commander4j/xml/interface/input/Production Declaration"/>
+        <ssccSequence path="/Users/dave/Downloads"/>
     </paths>
     
     <!-- Label Quantities -->

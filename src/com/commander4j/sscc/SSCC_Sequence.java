@@ -1,7 +1,5 @@
 package com.commander4j.sscc;
 
-import java.io.File;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,7 +38,7 @@ public class SSCC_Sequence extends Thread
 	public SSCC_Sequence(String uuid, String filename)
 	{
 		setUuid(uuid);
-		setPath(System.getProperty("user.dir") + File.separator + "xml" + File.separator + "sscc" + File.separator);
+		setPath(AutoLab.config.getSSCSequencePath());
 		setFilename(filename);
 		setName("SSCC Sequence {" + getFilename() + "}");
 
@@ -69,8 +67,12 @@ public class SSCC_Sequence extends Thread
 	public synchronized String readSSCC()
 	{
 		String result = "";
+		logger.debug(getName() + "Reading SSCC sequence number from file :" +getPath() + getFilename());
+		
+
 		xmlDoc = new JXMLDocument(getPath() + getFilename());
 
+		
 		// Get next SSCC from XML - the actual value in the xml are the next
 		// ones to use. Once used the program stores the incremented version
 		// back in the file for the next pallet.
@@ -204,11 +206,13 @@ public class SSCC_Sequence extends Thread
 	public void setFilename(String filename)
 	{
 		this.filename = filename;
+		logger.debug("ssccSequenceFilename=["+filename+"]");
 	}
 
 	public void setPath(String path)
 	{
 		this.path = path;
+		logger.debug("ssccSequencePath=["+path+"]");
 	}
 
 	public void shutdown()
