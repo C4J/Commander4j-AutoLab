@@ -13,10 +13,10 @@
     <!-- Folders -->
     
     <paths>
-        <labelSync path="./labels" frequency="120"/>
-        <dataSet path="./interface/input/dataset"/>
+        <labelSync path="./remote_labels" frequency="120"/>
+        <dataSet path="./remote_dataset"/>
         <output path="./interface/output/ProdDec"/>
-        <ssccSequence path="./xml/config/sscc"/>
+        <ssccSequence path=""/>
     </paths>
     
     <!-- Label Quantities -->

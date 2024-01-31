@@ -11,6 +11,8 @@ import org.w3c.dom.Text;
 
 import com.commander4j.autolab.AutoLab;
 import com.commander4j.bar.JEANBarcode;
+import com.commander4j.prodLine.ProdLine;
+import com.commander4j.resources.JRes;
 import com.commander4j.utils.JFileIO;
 import com.commander4j.utils.JUtility;
 import com.commander4j.xml.JXMLDocument;
@@ -34,6 +36,7 @@ public class SSCC_Sequence extends Thread
 	private Long warn;
 	private Long seqNumber;
 	private Long currentSeqNumber;
+	private String lastMessage = "";
 
 	public SSCC_Sequence(String uuid, String filename)
 	{
@@ -42,6 +45,15 @@ public class SSCC_Sequence extends Thread
 		setFilename(filename);
 		setName("SSCC Sequence {" + getFilename() + "}");
 
+	}
+	
+	public void appendNotification(String message)
+	{
+		if (message.equals(lastMessage) == false)
+		{
+			((ProdLine) AutoLab.threadList_ProdLine.get(uuid)).appendNotification(message);
+			lastMessage = message;
+		}
 	}
 
 	public String getUuid()
@@ -67,6 +79,8 @@ public class SSCC_Sequence extends Thread
 	public synchronized String readSSCC()
 	{
 		String result = "";
+		appendNotification(JRes.getText("reading_sscc_from_file") + ":" +getPath() + getFilename());
+		
 		logger.debug(getName() + "Reading SSCC sequence number from file :" +getPath() + getFilename());
 		
 
@@ -97,6 +111,7 @@ public class SSCC_Sequence extends Thread
 		checkdigit = barcode.calcCheckdigit(prefix + sequence);
 
 		result = prefix + sequence + checkdigit;
+		appendNotification("SSCC :" +result);
 
 		// Work out length of Sequence Number excluding check digit.
 		int prefixLength = prefix.length();
@@ -160,6 +175,8 @@ public class SSCC_Sequence extends Thread
 
 			document.appendChild(element_SSCC);
 
+			appendNotification(JRes.getText("updating")+" :" +getPath() + getFilename());
+			
 			fio.writeToDisk(getPath(), document, getFilename());
 
 		}
@@ -168,7 +185,7 @@ public class SSCC_Sequence extends Thread
 			logger.debug(getName() + " Error reading SSCC sequence number from file :" + e.getLocalizedMessage());
 		}
 
-		AutoLab.systemNotify.appendToMessage("Generating SSCC [" + result + "] from " + getFilename());
+		appendNotification(JRes.getText("generating_sscc")+" [" + result + "] "+JRes.getText("from") + " "+ getPath() + getFilename());
 
 		return result;
 	}
