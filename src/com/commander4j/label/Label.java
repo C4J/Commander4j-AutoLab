@@ -39,9 +39,19 @@ public class Label
 		this.uuid=uuid;
 		String labelData = "";
 		String fname = AutoLab.getDataSet_Field(uuid, "REPORT_FILENAME");
+		String ftype = AutoLab.getDataSet_Field(uuid, "REPORT_TYPE");
 		String template = System.getProperty("user.dir") + File.separator + "labels" + File.separator + AutoLab.getDataSet_Field(uuid, "REPORT_FILENAME");
 		File templateFile = new File(template);
+		
 		appendNotification(JRes.getText("reading_label_layout")+" ["+fname+"].");
+		
+		appendNotification(JRes.getText("label_type")+" ["+ftype+"].");
+		
+		if (ftype.equals("Label") == false)
+		{
+			appendNotification(JRes.getText("error_label_type"));
+			AutoLab.systemNotify.appendToMessage(JRes.getText("error_label_type"));
+		}
 		
 		preParseDEFINE_BARCODEs(templateFile);
 		labelData = getTemplate(templateFile);

@@ -46,7 +46,7 @@ public class AutoLab extends Thread
 	public static boolean run = true;
 	public static EmailQueue emailqueue = new EmailQueue();
 	public static WatchDog watchdog;
-	public static String version = "3.24";
+	public static String version = "3.25";
 	private JUtility utils = new JUtility();
 	public static EmailThread emailthread;
 	private TrayIconSystemInfo trayIconSystem = new TrayIconSystemInfo();
