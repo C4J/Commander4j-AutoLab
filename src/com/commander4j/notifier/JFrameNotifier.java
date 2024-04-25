@@ -24,6 +24,7 @@ import com.commander4j.utils.JUtility;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class JFrameNotifier extends JFrame
 {
@@ -143,7 +144,7 @@ public class JFrameNotifier extends JFrame
 	{
 				
 		setResizable(false);
-		setBounds(100, 100, 684, 273);
+		setBounds(100, 100, 684, 271);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -151,11 +152,13 @@ public class JFrameNotifier extends JFrame
 		contentPane.setLayout(null);
 
 		JDesktopPane desktopPane = new JDesktopPane();
-		desktopPane.setBounds(0, 0, 677, 262);
+		desktopPane.setBackground(new Color(254, 255, 255));
+		desktopPane.setBounds(0, 0, 684, 262);
 		contentPane.add(desktopPane);
+		desktopPane.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 677, 215);
+		scrollPane.setBounds(0, 0, 677, 203);
 		desktopPane.add(scrollPane);
 		messageArea.setEditable(false);
 		messageArea.setLineWrap(true);
@@ -164,6 +167,7 @@ public class JFrameNotifier extends JFrame
 		scrollPane.setViewportView(messageArea);
 		
 		JButton btnSave = new JButton(JRes.getText("save"));
+		btnSave.setBounds(3, 205, 167, 25);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			    BufferedWriter writer;
@@ -183,34 +187,33 @@ public class JFrameNotifier extends JFrame
 
 			}
 		});
-		btnSave.setBounds(1, 220, 167, 25);
 		desktopPane.add(btnSave);
 		
 		JButton btnClear = new JButton(JRes.getText("clear"));
+		btnClear.setBounds(172, 205, 167, 25);
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearMessage();
 			}
 		});
-		btnClear.setBounds(169, 220, 167, 25);
 		desktopPane.add(btnClear);
 		
 		JButton btnEmail = new JButton(JRes.getText("email"));
+		btnEmail.setBounds(341, 205, 167, 25);
 		btnEmail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AutoLab.emailqueue.addToQueue("Logs", "AutoLab Log "+titlebar+".log from [" + utils.getClientName() + "]", messageArea.getText(),"");
 			}
 		});
-		btnEmail.setBounds(337, 220, 167, 25);
 		desktopPane.add(btnEmail);
 		
 		JButton btnMinimize = new JButton(JRes.getText("minimise"));
+		btnMinimize.setBounds(510, 205, 167, 25);
 		btnMinimize.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 setState(Frame.ICONIFIED);
 			}
 		});
-		btnMinimize.setBounds(505, 220, 167, 25);
 		desktopPane.add(btnMinimize);
 
 		setAlwaysOnTop(true);

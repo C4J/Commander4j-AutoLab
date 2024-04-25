@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="10.0.7" transformSequenceNumber="10">
   <directoryPresets config="./running" />
-  <application name="Commander4j AutoLab" applicationId="8985-6673-6807-0058" mediaDir="../../../Distribution/java17/b6autolab4j" shrinkRuntime="false" shortName="AutoLab" publisher="David Garratt" publisherWeb="http://www.commander4j.com" version="3.25" allPathsRelative="true" macVolumeId="c0f86b3fb8cdcdfe" javaMinVersion="17" javaMaxVersion="17">
+  <application name="Commander4j AutoLab" applicationId="8985-6673-6807-0058" mediaDir="../../../Distribution/java17/b6autolab4j" shrinkRuntime="false" shortName="AutoLab" publisher="David Garratt" publisherWeb="http://www.commander4j.com" version="3.26" allPathsRelative="true" macVolumeId="c0f86b3fb8cdcdfe" javaMinVersion="17" javaMaxVersion="17">
     <languages skipLanguageSelection="true">
       <additionalLanguages>
         <language id="nl" />
@@ -86,8 +86,8 @@
     </entries>
   </files>
   <launchers>
-    <launcher name="autolab4j_startup" id="44" icnsFile="./images/Icons/AutoLab4j_Icons/MyIcon.icns">
-      <executable name="autolab4j_startup" iconSet="true" iconFile="./images/Icons/AutoLab4j_Icons/icon.ico" executableMode="gui" singleInstance="true" />
+    <launcher name="AutoLab4j_Startup" id="44" icnsFile="./images/Icons/AutoLab4j_Icons/MyIcon.icns">
+      <executable name="AutoLab4j_Startup" iconSet="true" iconFile="./images/Icons/AutoLab4j_Icons/icon.ico" executableMode="gui" singleInstance="true" />
       <java mainClass="com.commander4j.autolab.StartStop" vmParameters="-Dlog4j.configurationFile=./xml/config/log4j2.xml -Dfile.encoding=Cp1252">
         <classPath>
           <archive location="autolab4j.jar" failOnError="false" />

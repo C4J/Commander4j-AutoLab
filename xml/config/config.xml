@@ -35,8 +35,8 @@
     <!-- Copy of some System Keys normally read from database (jdbc) -->
     
     <controls>
-        <system key="HOST REF" value="VALIVE"/>
-        <system key="PLANT" value="0925"/>
+        <system key="HOST REF" value="DEMO"/>
+        <system key="PLANT" value="1234"/>
         <system key="BATCH FORMAT" value="{YEAR1}{JULIAN_DAY}{PROCESS_ORDER}"/>
         <system key="BATCH EXPIRY TIME" value="-"/>     
         <system key="LABEL_HEADER_COMMENT" value="Free format text"/>
@@ -52,9 +52,7 @@
     
     <productionLines>
         
-        <!-- CETEC 2 -->
-        <!-- CAMBIAR LA IP DEL ADAM > -->
-        <productionLine name="CETEC 2" enabled="Y"> 
+        <productionLine name="LINE 1" enabled="Y"> 
             <modbus name="ADAM-6050">
                 <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
@@ -63,13 +61,11 @@
                 <coilTriggerValue>true</coilTriggerValue>
                 <semiPalletCoilAddress>2</semiPalletCoilAddress>
             </modbus>
-            <printer name="CETEC 2"/>
-            <SSCC filename="CETEC 2.xml"/>
+            <printer name="PRINTER 1"/>
+            <SSCC filename="PRINTER 1.xml"/>
         </productionLine>
         
-        <!-- CETEC 4 -->
-        
-       <productionLine name="CETEC 4" enabled="N"> 
+       <productionLine name="LINE 2" enabled="Y"> 
             <modbus name="ADAM-6050">
                 <ipAddress>127.0.0.1</ipAddress>
                 <portNumber>502</portNumber>
@@ -78,40 +74,10 @@
                 <coilTriggerValue>true</coilTriggerValue>
                 <semiPalletCoilAddress>4</semiPalletCoilAddress>
             </modbus> 
-            <printer name="CETEC 4"/>
-            <SSCC filename="CETEC 4.xml"/>
+            <printer name="PRINTER 2"/>
+            <SSCC filename="PRINTER 2.xml"/>
         </productionLine>
-        
-        <!-- CETEC 5 -->
-       
-        <productionLine name="CETEC 5" enabled="N"> 
-            <modbus name="ADAM-6050">
-                <ipAddress>127.0.0.1</ipAddress>
-                <portNumber>502</portNumber>
-                <coilAddress>5</coilAddress>
-                <timeout>4000</timeout>
-                <coilTriggerValue>true</coilTriggerValue>
-                <semiPalletCoilAddress>6</semiPalletCoilAddress>
-            </modbus>    
-            <printer name="CETEC 5"/>
-            <SSCC filename="CETEC 5.xml"/>
-        </productionLine>
-        
-        <!-- CETEC 6 -->
-        
-       <productionLine name="CETEC 6" enabled="N"> 
-            <modbus name="ADAM-6050">
-                <ipAddress>127.0.0.1</ipAddress>
-                <portNumber>502</portNumber>
-                <coilAddress>7</coilAddress>
-                <timeout>4000</timeout>
-                <coilTriggerValue>true</coilTriggerValue>
-                <semiPalletCoilAddress>8</semiPalletCoilAddress>
-            </modbus>  
-            <printer name="CETEC 6"/>
-            <SSCC filename="CETEC 6.xml"/>
-        </productionLine>
-        
+
     </productionLines>
     
     <!-- Alias field names so we can use unmodified .lbl templayte file -->  
