@@ -172,7 +172,7 @@ public class Print extends Thread
 						{
 							if (firstError)
 							{
-								appendNotification(JRes.getText("sending_data_to_printer")+" [" + getPrinterName() + "] [" + getIpAddress() + "]:" + getPortNumber() + "]");
+								appendNotification(JRes.getText("sending_data_to_printer") + " [" + getPrinterName() + "] [" + getIpAddress() + "]:" + getPortNumber() + "]");
 								// firstError = false;
 							}
 
@@ -184,10 +184,10 @@ public class Print extends Thread
 							logger.debug("writeBytes start of data stream");
 							logger.debug("<<<-----------------------------)>>");
 							logger.debug(this.getData());
-							
+
 							outToServer.print(this.getData());
 							outToServer.flush();
-							
+
 							outToServer.close();
 							logger.debug("<<<-----------------------------)>>");
 							logger.debug("<<<writeBytes end of data stream>>>");
@@ -207,7 +207,7 @@ public class Print extends Thread
 							setErrorMessage(e.getLocalizedMessage());
 							if (firstError)
 							{
-								appendNotification(JRes.getText("error_sending_data_to_printer")+" : " + e.getLocalizedMessage());
+								appendNotification(JRes.getText("error_sending_data_to_printer") + " : " + e.getLocalizedMessage());
 								logger.debug("Error Sending data to printer : " + e.getLocalizedMessage());
 								firstError = false;
 							}
@@ -217,7 +217,7 @@ public class Print extends Thread
 							setErrorMessage(e.getLocalizedMessage());
 							if (firstError)
 							{
-								appendNotification(JRes.getText("error_sending_data_to_printer")+" : " + e.getLocalizedMessage());
+								appendNotification(JRes.getText("error_sending_data_to_printer") + " : " + e.getLocalizedMessage());
 								logger.debug("Error Sending data to printer : " + e.getLocalizedMessage());
 								firstError = false;
 							}
@@ -226,14 +226,16 @@ public class Print extends Thread
 						{
 							if (isDataReady())
 							{
-							outToServer.flush();
-							
-							outToServer.close();
+								if (outToServer != null)
+								{
+									outToServer.flush();
+									outToServer.close();
+								}
 							}
-							
-							setDataReady(false);
-							
-							outToServer= null;
+
+							//setDataReady(false);
+
+							outToServer = null;
 						}
 					}
 				}
