@@ -187,6 +187,9 @@ public class Config
 
 				prodLine.setModbus_Timeout(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/timeout"));
 				logger.debug("         Modbus Timeout       [" + prodLine.getModbus_Timeout() + "]");
+				
+				prodLine.setModbus_Retry(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/retryDelay"));
+				logger.debug("         Modbus Retry         [" + prodLine.getModbus_Retry() + "]");
 
 				prodLine.setModbus_Coil_Trigger_Value(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/coilTriggerValue"));
 				logger.debug("         Coil Trigger Value   [" + prodLine.getModbus_Coil_Trigger_Value() + "]");

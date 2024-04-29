@@ -10,6 +10,7 @@ public class ProdLineDefinition
 	String modbus_Coil_Address = "";
 	String semiPallet_modbus_Coil_Address = "";
 	String modbus_Timeout = "";
+	String modbus_Retry = "";
 	String modbus_Coil_Trigger_Value = "";
 	String printer_Name = "";
 	String sscc_Filename = "";
@@ -73,11 +74,23 @@ public class ProdLineDefinition
 	}
 	public String getModbus_Timeout()
 	{
-		return modbus_Timeout;
+		return this.modbus_Timeout;
+	}
+	public String getModbus_Retry()
+	{
+		return this.modbus_Retry;
 	}
 	public void setModbus_Timeout(String modbus_Timeout)
 	{
 		this.modbus_Timeout = modbus_Timeout;
+	}
+	public void setModbus_Retry(String modbus_Retry)
+	{
+		if (modbus_Retry.equals(""))
+		{
+			modbus_Retry = "1000";
+		}
+		this.modbus_Retry = modbus_Retry;
 	}
 	public String getModbus_Coil_Trigger_Value()
 	{

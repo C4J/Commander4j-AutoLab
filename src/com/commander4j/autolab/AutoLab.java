@@ -120,7 +120,7 @@ public class AutoLab extends Thread
 
 			ProdLineDefinition prodlinedef0 = me0.getValue();
 			ProdLine prodLine0 = new ProdLine(prodlinedef0.getProdLine_Name(), prodlinedef0.getModbus_Name(), prodlinedef0.getModbus_IPAddress(), Integer.valueOf(prodlinedef0.getModbus_Port()), Integer.valueOf(prodlinedef0.getModbus_Coil_Address()), Integer.valueOf(prodlinedef0.getModbus_Timeout()),
-					Boolean.valueOf(prodlinedef0.getModbus_Coil_Trigger_Value()), prodlinedef0.getPrinter_Name(), config.getDataSetPath(), prodlinedef0.getSscc_Filename(),Integer.valueOf(prodlinedef0.getSemiPallet_Modbus_Coil_Address()));
+					Boolean.valueOf(prodlinedef0.getModbus_Coil_Trigger_Value()), prodlinedef0.getPrinter_Name(), config.getDataSetPath(), prodlinedef0.getSscc_Filename(),Integer.valueOf(prodlinedef0.getSemiPallet_Modbus_Coil_Address()),Integer.valueOf(prodlinedef0.getModbus_Retry()));
 			threadList_ProdLine.put(prodLine0.getUuid(), prodLine0);
 
 			logger.debug("[" + prodLine0.getUuid() + "] Adding Icon to System Tray");

@@ -25,6 +25,7 @@ public class Modbus extends Thread
 	private String ipAddress;
 	private int portNumber;
 	private int timeOut;
+	private int retryDelay;
 	private int address;
 	private int semiPalletAddress;
 	private boolean printOnValue;
@@ -43,12 +44,13 @@ public class Modbus extends Thread
 	private ProcDec_XML prodDec = new ProcDec_XML();
 	private String lastMessage = "";
 
-	public Modbus(String uuid, String name, String ipAddress, int portNumber, int timeOut, int address, boolean printOnValue, String ssccSequenceFilename,int semiPalletAddress)
+	public Modbus(String uuid, String name, String ipAddress, int portNumber, int timeOut, int address, boolean printOnValue, String ssccSequenceFilename,int semiPalletAddress,int retryDelay)
 	{
 		this.uuid = uuid;
 		this.ipAddress = ipAddress;
 		this.portNumber = portNumber;
 		this.timeOut = timeOut;
+		this.retryDelay = retryDelay;
 		this.address = address;
 		this.semiPalletAddress = semiPalletAddress;
 		this.ssccSequenceFilename = ssccSequenceFilename;
@@ -116,10 +118,20 @@ public class Modbus extends Thread
 	{
 		return timeOut;
 	}
+	
+	public int getRetryDelay()
+	{
+		return retryDelay;
+	}
 
 	public void setTimeOut(int timeOut)
 	{
 		this.timeOut = timeOut;
+	}
+	
+	public void setRetryDelay(int retryDelay)
+	{
+		this.retryDelay = retryDelay;
 	}
 
 	public void shutdown()
@@ -398,6 +410,16 @@ public class Modbus extends Thread
 			catch (java.net.SocketException e)
 			{
 				logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SocketException " + e.getLocalizedMessage());
+				
+				//wait.milliSec(getRetryDelay());
+				try
+				{
+					Thread.sleep(getRetryDelay());
+				}
+				catch (InterruptedException e1)
+				{
+				}
+				
 				if (run == false)
 				{
 					break;

@@ -58,6 +58,7 @@
                 <portNumber>502</portNumber>
                 <coilAddress>1</coilAddress>
                 <timeout>4000</timeout>
+                <retryDelay>1000</retryDelay>
                 <coilTriggerValue>true</coilTriggerValue>
                 <semiPalletCoilAddress>2</semiPalletCoilAddress>
             </modbus>
@@ -71,6 +72,7 @@
                 <portNumber>502</portNumber>
                 <coilAddress>3</coilAddress>
                 <timeout>4000</timeout>
+                <retryDelay>1000</retryDelay>
                 <coilTriggerValue>true</coilTriggerValue>
                 <semiPalletCoilAddress>4</semiPalletCoilAddress>
             </modbus> 
