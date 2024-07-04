@@ -1,0 +1,1 @@
+mvn -f b6AutoLab_pom.xml clean dependency:copy-dependencies
