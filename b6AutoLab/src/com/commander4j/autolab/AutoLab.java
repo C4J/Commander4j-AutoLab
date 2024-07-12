@@ -46,12 +46,13 @@ public class AutoLab extends Thread
 	public static boolean run = true;
 	public static EmailQueue emailqueue = new EmailQueue();
 	public static WatchDog watchdog;
-	public static String version = "3.31";
+	public static String version = "3.41";
 	private JUtility utils = new JUtility();
 	public static EmailThread emailthread;
 	private TrayIconSystemInfo trayIconSystem = new TrayIconSystemInfo();
 	public static JFrameNotifier systemNotify;
 	public static JRes rb = new JRes();
+	public static Boolean JVMShuttingDown = false;
 
 	@Override
 	public void run()
@@ -158,11 +159,14 @@ public class AutoLab extends Thread
 
 			logger.debug("StopAutoLab " + ((ProdLine) me2.getValue()).getName());
 
-			systemNotify.appendToMessage(JRes.getText("stopping_background_process") + " [" + ((ProdLine) me2.getValue()).getProdLineName() + "]");
+			if (AutoLab.JVMShuttingDown==false)
+			{
+				systemNotify.appendToMessage(JRes.getText("stopping_background_process") + " [" + ((ProdLine) me2.getValue()).getProdLineName() + "]");
+			}
 
 			String uuid = ((ProdLine) me2.getValue()).getUuid();
 
-			int retries = 5;
+			int retries = 25;
 
 			while ((((ProdLine) me2.getValue()).isAlive()) && (retries > 0))
 			{
@@ -180,19 +184,25 @@ public class AutoLab extends Thread
 				retries--;
 
 			}
-
+			
 			if (((ProdLine) me2.getValue()).isAlive())
 			{
 				((ProdLine) me2.getValue()).interrupt();
 			}
-
-			logger.debug("[" + uuid + "] Removing Icon from System Tray");
-			SystemTray.getSystemTray().remove(iconList_SystemTray.get(uuid).getTrayIcon());
-			iconList_SystemTray.remove(uuid);
+			
+			if (AutoLab.JVMShuttingDown==false)
+			{
+				logger.debug("[" + uuid + "] Removing Icon from System Tray");
+				SystemTray.getSystemTray().remove(iconList_SystemTray.get(uuid).getTrayIcon());
+				iconList_SystemTray.remove(uuid);
+			}
 
 		}
 
-		systemNotify.appendToMessage(JRes.getText("stopping_background_process")+" [LabelSync]");
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			systemNotify.appendToMessage(JRes.getText("stopping_background_process")+" [LabelSync]");
+		}
 		
 		sync.shutdown();
 		
@@ -212,7 +222,10 @@ public class AutoLab extends Thread
 			}
 		}
 
-		systemNotify.appendToMessage(JRes.getText("stopping_background_process")+" ["+JRes.getText("email")+"]");
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			systemNotify.appendToMessage(JRes.getText("stopping_background_process")+" ["+JRes.getText("email")+"]");
+		}
 
 		emailthread.shutdown();
 
@@ -228,11 +241,14 @@ public class AutoLab extends Thread
 			}
 		}
 
-		SystemTray.getSystemTray().remove(trayIconSystem.getTrayIcon());
-
-		systemNotify.setVisible(false);
-		systemNotify.dispose();
-		systemNotify = null;
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			SystemTray.getSystemTray().remove(trayIconSystem.getTrayIcon());
+	
+			systemNotify.setVisible(false);
+			systemNotify.dispose();
+			systemNotify = null;
+		}
 
 	}
 

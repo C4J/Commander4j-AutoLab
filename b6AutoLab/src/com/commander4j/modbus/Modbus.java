@@ -156,10 +156,7 @@ public class Modbus extends Thread
 					e.printStackTrace();
 				}
 			}
-			else
-			{
-				modbusClient = null;
-			}
+
 			logger.debug("[" + getUuid() + "] {" + getName() + "} " + "Thread Shutdown Requested.");
 		}
 	}

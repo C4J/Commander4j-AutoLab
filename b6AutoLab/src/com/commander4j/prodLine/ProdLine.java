@@ -281,7 +281,11 @@ public class ProdLine extends Thread
 		
 		try
 		{
-			AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN4, "Shutdown Stage 4");
+			if (AutoLab.JVMShuttingDown==false)
+			{
+				AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN4, "Shutdown Stage 4");
+			}
+			
 			int retries=0;
 			while (modbus1.isAlive() && (retries<10))
 			{
@@ -306,12 +310,17 @@ public class ProdLine extends Thread
 			logger.debug("["+getUuid()+"] {"+getName()+"} Exception : "+ex1.getLocalizedMessage());
 		}
 		
-		prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" Modbus");
-
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" Modbus");
+		}
 		
 		try
 		{
-			AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN3, "Shutdown Stage 3");
+			if (AutoLab.JVMShuttingDown==false)
+			{
+				AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN3, "Shutdown Stage 3");
+			}
 			while (print1.isAlive())
 			{
 				print1.shutdown();
@@ -323,9 +332,11 @@ public class ProdLine extends Thread
 			logger.debug("["+getUuid()+"] {"+getName()+"} Exception : "+ex1.getLocalizedMessage());
 		}
 		
-		prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" "+JRes.getText("printer"));
-		
-		AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN2, "Shutdown 2");
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" "+JRes.getText("printer"));
+			AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN2, "Shutdown 2");
+		}
 		
 		try
 		{
@@ -340,11 +351,14 @@ public class ProdLine extends Thread
 			logger.debug("["+getUuid()+"] {"+getName()+"} Exception : "+ex1.getLocalizedMessage());
 		}
 
-		prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" DataSet");
-		
-		AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN1, "Shutdown 1");
-		
-		AutoLab.stop_SSCC_Thread(getSsccSequenceFilename());
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" DataSet");
+			
+			AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN1, "Shutdown 1");
+			
+			AutoLab.stop_SSCC_Thread(getSsccSequenceFilename());
+		}
 		
 		try
 		{
@@ -357,20 +371,29 @@ public class ProdLine extends Thread
 
 		if (AutoLab.config.isLabelaryEnabled() == true)
 		{
-			prodLinePreview.setVisible(false);
-			prodLinePreview.dispose();
-			prodLinePreview=null;
+			if (AutoLab.JVMShuttingDown==false)
+			{
+				prodLinePreview.setVisible(false);
+				prodLinePreview.dispose();
+				prodLinePreview=null;
+			}
 		}
 		
-		prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" SSCC");
-		
-		AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN, "Shutdown");
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			prodLineNotify.appendToMessage(JRes.getText("stopped_background_process")+" SSCC");
+			
+			AutoLab.updateTrayIconStatus(getUuid()).setStatus(TrayIconProdLineStatus.status_SHUTDOWN, "Shutdown");
+		}
 		
 		logger.debug("["+getUuid()+"] {"+getName()+"} Thread Stopped...");
 		
-		prodLineNotify.setVisible(false);
-		prodLineNotify.dispose();
-		prodLineNotify=null;
+		if (AutoLab.JVMShuttingDown==false)
+		{
+			prodLineNotify.setVisible(false);
+			prodLineNotify.dispose();
+			prodLineNotify=null;
+		}
 
 	}
 	

@@ -18,6 +18,8 @@ public class ShutdownHook extends Thread
 	public void run()
 	{
 
+		AutoLab.JVMShuttingDown = true;
+		
 		StartStop.autolab.requestStop();
 		StartStop.autolab.interrupt();
 
