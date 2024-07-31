@@ -26,7 +26,7 @@ public class Print extends Thread
 	private String lastMessage = "";
 	private Logger logger = org.apache.logging.log4j.LogManager.getLogger((Print.class));
 	private boolean firstError = true;
-	private PrintWriter outToServer;
+	private OutputStreamWriter outToServer;
 
 	public Print(String uuid, String name)
 	{
@@ -178,14 +178,14 @@ public class Print extends Thread
 
 							this.clientSocket = new Socket(this.ipAddress, this.portNumber);
 
-							outToServer = new PrintWriter(clientSocket.getOutputStream());
+							outToServer = new OutputStreamWriter(clientSocket.getOutputStream());
 
 							logger.debug("<<<-----------------------------)>>");
 							logger.debug("writeBytes start of data stream");
 							logger.debug("<<<-----------------------------)>>");
 							logger.debug(this.getData());
 
-							outToServer.print(this.getData());
+							outToServer.write(this.getData());
 							outToServer.flush();
 
 							outToServer.close();
@@ -224,18 +224,38 @@ public class Print extends Thread
 						}
 						finally
 						{
-							if (isDataReady())
+
+							if (outToServer != null)
 							{
-								if (outToServer != null)
+								
+								try
 								{
-									outToServer.flush();
 									outToServer.close();
 								}
+								catch (IOException e)
+								{
+									logger.debug("Error closing OutputStreamWriter : " + e.getLocalizedMessage());
+								}
+
+								outToServer = null;
 							}
 
-							//setDataReady(false);
+							if (this.clientSocket != null)
+							{
+								if (this.clientSocket.isConnected())
+								{
+									try
+									{
+										this.clientSocket.close();
+									}
+									catch (IOException e)
+									{
+										logger.debug("Error closing Socket : " + e.getLocalizedMessage());
+									}
+								}
 
-							outToServer = null;
+								this.clientSocket = null;
+							}
 						}
 					}
 				}
