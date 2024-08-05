@@ -11,13 +11,18 @@
 		  	
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.17.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-mail -->
 		<dependency>
 			<groupId>org.eclipse.angus</groupId>
 			<artifactId>angus-mail</artifactId>
 			<version>2.0.3</version>
 		</dependency>
-		
 		<!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-activation -->
 		<dependency>
 		    <groupId>org.eclipse.angus</groupId>
