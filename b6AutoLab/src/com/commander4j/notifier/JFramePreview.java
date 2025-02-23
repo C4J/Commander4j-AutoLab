@@ -9,15 +9,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -47,73 +46,58 @@ public class JFramePreview extends JFrame
 	private String ImageFilename = "./labelary/blank.png";
 	private String lastMessage = "";
 
-	public boolean setData(String zpl)
+	public boolean setData(String zplCode)
 	{
 		boolean result = false;
 		ImageFilename = "./labelary/blank.png";
+		
 
-		URL url;
-		try
-		{
-			url = new URL(AutoLab.config.getLabelaryURL());
-			
-			appendNotification("Requesting image from "+AutoLab.config.getLabelaryURL());
-
-			HttpURLConnection connection;
-			try
-			{
-				connection = (HttpURLConnection) url.openConnection();
-				connection.setConnectTimeout(2000);
-				connection.setReadTimeout(2000);
-				connection.setRequestMethod("POST");
-				connection.setDoInput(true);
-				connection.setDoOutput(true);
-				connection.setUseCaches(false);
-				connection.setRequestProperty("Accept-Charset", "UTF-8");
-				connection.setRequestProperty("User-Agent", "Commander4j AutoLab4j");
-				connection.setRequestProperty("Content-Length", String.valueOf(zpl.length()));
-
-				// connection.setRequestProperty("Accept", "application/png");
-
-				OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(),Charset.forName("UTF-8"));
-				writer.write(zpl);
-				writer.flush();
-
-				InputStream inputStream = connection.getInputStream();
-
-				OutputStream outputStream = new FileOutputStream("./labelary/" + titlebar + ".png");
-
-				int bytesRead = -1;
-				byte[] buffer = new byte[10240];
-				while ((bytesRead = inputStream.read(buffer)) != -1)
-				{
-					outputStream.write(buffer, 0, bytesRead);
-				}
-
-				outputStream.close();
-				inputStream.close();
-
-				ImageFilename = "./labelary/" + titlebar + ".png";
-
+        try {
+            byte[] imageBytes = sendZplToLabelary(zplCode);
+            if (imageBytes != null) {
+                saveImage(imageBytes, ImageFilename);
+                ImageFilename = "./labelary/" + titlebar + ".png";
 				setImage();
-
-			}
-			catch (IOException e)
-			{
-				ImageFilename = "./labelary/unavailabe.png";
-				appendNotification("Unable to connect "+AutoLab.config.getLabelaryURL());
-				appendNotification("Error "+e.getMessage());
-			}
-
-		}
-		catch (MalformedURLException e)
-		{
+                result = true;
+            } else {
+                System.err.println("Failed to retrieve image.");
+				appendNotification("Failed to retrieve image.");
+            }
+        } catch (IOException | InterruptedException e) {
 			ImageFilename = "./labelary/unavailabe.png";
-			appendNotification("Error returned from "+AutoLab.config.getLabelaryURL());
+			appendNotification("Unable to connect "+AutoLab.config.getLabelaryURL());
 			appendNotification("Error "+e.getMessage());
-		}
+        }
+		
+		
 		return result;
 	}
+	
+	   public  byte[] sendZplToLabelary(String zpl) throws IOException, InterruptedException {
+	        HttpClient client = HttpClient.newHttpClient();
+	        
+	        HttpRequest request = HttpRequest.newBuilder()
+	            .uri(URI.create(AutoLab.config.getLabelaryURL()))
+	            .header("Accept", "image/png")
+	            .POST(HttpRequest.BodyPublishers.ofString(zpl))
+	            .build();
+	        
+	        HttpResponse<byte[]> response = client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+	        
+	        if (response.statusCode() == 200) {
+	            return response.body();
+	        } else {
+				ImageFilename = "./labelary/unavailabe.png";
+				appendNotification("Error returned from "+AutoLab.config.getLabelaryURL());
+				appendNotification("Response "+response.statusCode());
+	            return null;
+	        }
+	    }
+
+	    public  void saveImage(byte[] imageData, String filePath) throws IOException {
+	        Path path = Path.of(filePath);
+	        Files.write(path, imageData, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+	    }
 	
 	public void appendNotification(String message)
 	{

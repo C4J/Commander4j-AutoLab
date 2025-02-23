@@ -46,7 +46,7 @@ public class AutoLab extends Thread
 	public static boolean run = true;
 	public static EmailQueue emailqueue = new EmailQueue();
 	public static WatchDog watchdog;
-	public static String version = "3.60";
+	public static String version = "3.70";
 	private JUtility utils = new JUtility();
 	public static EmailThread emailthread;
 	private TrayIconSystemInfo trayIconSystem = new TrayIconSystemInfo();
@@ -97,8 +97,13 @@ public class AutoLab extends Thread
 
 
 		logger.debug("Version " + version);
+		
+		Locale newLocale = new Locale.Builder()
+			    .setLanguage(Common.locale_language)
+			    .setRegion(Common.locale_region)
+			    .build();
 
-		Locale.setDefault(new Locale(Common.locale_language, Common.locale_region));
+				Locale.setDefault(newLocale);
 
 		systemNotify.appendToMessage(JRes.getText("loading_config"));
 		// *Get Configuration* //

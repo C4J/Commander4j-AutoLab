@@ -46,7 +46,7 @@
     
     <!-- URL of Internet Web Service used to display label on screen -->
     
-    <labelary enabled="false">
+    <labelary enabled="true">
     	<url>http://api.labelary.com/v1/printers/8dpmm/labels/6x9/0/</url>
     </labelary>
     

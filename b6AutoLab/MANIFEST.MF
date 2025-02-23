@@ -3,7 +3,7 @@ Main-Class: com.commander4j.autolab.StartStop
 Class-Path: lib/angus-activation-2.0.2.jar 
  lib/angus-mail-2.0.3.jar 
  lib/commons-beanutils-1.9.4.jar 
- lib/commons-codec-1.17.1.jar 
+ lib/commons-codec-1.18.0.jar 
  lib/commons-collections-3.2.2.jar 
  lib/commons-collections4-4.4.jar 
  lib/commons-io-2.18.0.jar 
@@ -17,4 +17,4 @@ Class-Path: lib/angus-activation-2.0.2.jar
  lib/modbus/EasyModbusJava.jar 
  lib/modbus/EasyModbusJavaClient.jar 
  lib/modbus/EasyModbusJavaServer.jar 
- lib/opencsv-5.9.jar 
+ lib/opencsv-5.10.jar 
