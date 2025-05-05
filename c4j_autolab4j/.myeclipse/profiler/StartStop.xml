@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="profiler.settings.obj.alloc.stack.sampling.depth">-1</entry>
+<entry key="app_preset_prof_preset_selector"></entry>
+<entry key="myeclipse.profiling.mode">0</entry>
+<entry key="app_preset_prof_preset_alloc_p">10</entry>
+<entry key="app_preset_"></entry>
+<entry key="profiler.settings.sampling.interval">10</entry>
+<entry key="app_preset_prof_preset_runnables_p">true</entry>
+<entry key="profiler.settings.cpu.profiling.type">0</entry>
+<entry key="app_preset_prof_preset_name">StartStop Launch Configuration</entry>
+<entry key="app_preset_prof_preset_filterMode_s">true</entry>
+<entry key="app_preset_prof_preset_samplingRate_s">100</entry>
+<entry key="app_preset_prof_preset_filterMode_p">false</entry>
+<entry key="app_preset_prof_preset_memoryMode_p">true</entry>
+<entry key="app_preset_prof_jdbc_filter_p"></entry>
+<entry key="profiler.settings.instrument.method.invoke">true</entry>
+<entry key="app_preset_prof_preset_samplingRefreshRate_s">1000</entry>
+<entry key="app_preset_prof_preset_stacks_p">true</entry>
+<entry key="profiler.settings.n.profiled.threads.limit">32</entry>
+<entry key="app_preset_prof_memory_filter_p"></entry>
+<entry key="app_preset_prof_preset_refreshRate_s">1000</entry>
+<entry key="profiler.settings.instr.scheme">1</entry>
+<entry key="app_preset_prof_preset_filter_s"></entry>
+<entry key="profiler.settings.istrument.getter.setter.methods">false</entry>
+<entry key="profiler.settings.instrument.empty.methods">false</entry>
+<entry key="app_preset_prof_preset_roots_p">com.commander4j.autolab.**
+com.commander4j.bar.**
+com.commander4j.batch.**
+com.commander4j.common.**
+com.commander4j.config.**
+com.commander4j.dataset.**
+com.commander4j.email.**
+com.commander4j.label.**
+com.commander4j.modbus.**
+com.commander4j.notifier.**
+com.commander4j.output.**
+com.commander4j.prodLine.**
+com.commander4j.resources.**
+com.commander4j.sscc.**
+com.commander4j.utils.**
+com.commander4j.watchdog.**
+com.commander4j.xml.**
+com.commander4j.zebra.**
+</entry>
+<entry key="app_preset_prof_preset_filter_p">com.commander4j.autolab.*,
+com.commander4j.bar.*,
+com.commander4j.batch.*,
+com.commander4j.common.*,
+com.commander4j.config.*,
+com.commander4j.dataset.*,
+com.commander4j.email.*,
+com.commander4j.label.*,
+com.commander4j.modbus.*,
+com.commander4j.notifier.*,
+com.commander4j.output.*,
+com.commander4j.prodLine.*,
+com.commander4j.resources.*,
+com.commander4j.sscc.*,
+com.commander4j.utils.*,
+com.commander4j.watchdog.*,
+com.commander4j.xml.*,
+com.commander4j.zebra.*</entry>
+</properties>
