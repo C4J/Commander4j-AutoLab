@@ -1,32 +1,56 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG">
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" name="MyApp">
+  
+  <Properties>
+    <Property name="LOG_DIR">./logs</Property>
+  </Properties>
+  
   <Appenders>
-    <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    <Console name="Console" target="SYSTEM_OUT" ignoreExceptions="false">
+      <PatternLayout pattern="%d{DEFAULT} - %msg%n"/>
     </Console>
-    <RollingFile name="RollingFile" fileName="logs/AutoLab.log" filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+    
+    <RollingFile
+      name="rollingFile"
+      fileName="${LOG_DIR}/AutoLab.log"
+      filePattern="${LOG_DIR}/AutoLab-%d{yyyy-MM-dd}-%i.log.gz"
+      ignoreExceptions="false">
+      
       <PatternLayout>
-        <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
       </PatternLayout>
+      
       <Policies>
-        <TimeBasedTriggeringPolicy/>
-        <SizeBasedTriggeringPolicy size="250 MB"/>
+        <SizeBasedTriggeringPolicy size="10MB"/>
+        <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
       </Policies>
+      
+      <DefaultRolloverStrategy max="100">
+        <Delete basePath="${LOG_DIR}" maxDepth="1">
+          <IfFileName glob="AutoLab-*.log.gz"/>
+          <IfLastModified age="P14D"/>
+        </Delete>
+      </DefaultRolloverStrategy>
     </RollingFile>
   </Appenders>
+  
   <Loggers>
-    <Logger name="org.apache.http" level="WARN">
+    <Root level="debug">
+      <AppenderRef ref="rollingFile"/>
       <AppenderRef ref="Console"/>
-    </Logger>
-    <Logger name="org.apache.http.wire" level="WARN">
-      <AppenderRef ref="Console"/>
-    </Logger>
-    <Logger name="org.apache.http.impl.conn" level="WARN">
-      <AppenderRef ref="Console"/>
-    </Logger>
-    <Root level="DEBUG">
-      <AppenderRef ref="Console"/>
-      <AppenderRef ref="RollingFile"/>
     </Root>
+    
+    <Logger name="org.apache.http" level="debug">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    
+    <Logger name="org.apache.http.wire" level="debug">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    
+    <Logger name="org.apache.http.impl.conn" level="debug">
+      <AppenderRef ref="Console"/>
+    </Logger>
   </Loggers>
+  
 </Configuration>
