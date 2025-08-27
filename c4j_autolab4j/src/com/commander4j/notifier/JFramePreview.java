@@ -49,8 +49,8 @@ public class JFramePreview extends JFrame
 	public boolean setData(String zplCode)
 	{
 		boolean result = false;
-		ImageFilename = "./labelary/blank.png";
-		
+		//ImageFilename = "./labelary/blank.png";
+		ImageFilename = "./labelary/" + titlebar + ".png";
 
         try {
             byte[] imageBytes = sendZplToLabelary(zplCode);
