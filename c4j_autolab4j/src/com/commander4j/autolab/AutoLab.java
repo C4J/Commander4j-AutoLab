@@ -46,7 +46,7 @@ public class AutoLab extends Thread
 	public static boolean run = true;
 	public static EmailQueue emailqueue = new EmailQueue();
 	public static WatchDog watchdog;
-	public static String version = "3.83";
+	public static String version = "3.84";
 	private JUtility utils = new JUtility();
 	public static EmailThread emailthread;
 	private TrayIconSystemInfo trayIconSystem = new TrayIconSystemInfo();
@@ -97,7 +97,7 @@ public class AutoLab extends Thread
 
 
 		logger.debug("Version " + version);
-		
+
 		Locale newLocale = new Locale.Builder()
 			    .setLanguage(Common.locale_language)
 			    .setRegion(Common.locale_region)
@@ -111,7 +111,7 @@ public class AutoLab extends Thread
 		config = new Config();
 
 		lines.putAll(config.getConfigProdLines());
-		
+
 		emailqueue.addToQueue("StartStop", "AutoLab " + version + " started on " + utils.getClientName(), "AutoLab service version " + version + " started.", "");
 
 		trayIconSystem.init();
@@ -141,9 +141,9 @@ public class AutoLab extends Thread
 
 		systemNotify.appendToMessage(JRes.getText("starting_background_process")+ " ["+JRes.getText("labelsync")+"]");
 		sync = new LabelSync("LabelSync", config.getLabelSyncPath(), config.getLabelSyncFrequency());
-		
+
 		sync.start();
-		
+
 		watchdog = new WatchDog(config.getWatchDogPort());
 		watchdog.start();
 
@@ -189,12 +189,12 @@ public class AutoLab extends Thread
 				retries--;
 
 			}
-			
+
 			if (((ProdLine) me2.getValue()).isAlive())
 			{
 				((ProdLine) me2.getValue()).interrupt();
 			}
-			
+
 			if (AutoLab.JVMShuttingDown==false)
 			{
 				logger.debug("[" + uuid + "] Removing Icon from System Tray");
@@ -208,9 +208,9 @@ public class AutoLab extends Thread
 		{
 			systemNotify.appendToMessage(JRes.getText("stopping_background_process")+" [LabelSync]");
 		}
-		
+
 		sync.shutdown();
-		
+
 		watchdog.shutdown();
 
 		emailqueue.addToQueue("StartStop", "AutoLab " + version + " stopped on " + utils.getClientName(), "AutoLab service version " + version + " stopped.", "");
@@ -249,7 +249,7 @@ public class AutoLab extends Thread
 		if (AutoLab.JVMShuttingDown==false)
 		{
 			SystemTray.getSystemTray().remove(trayIconSystem.getTrayIcon());
-	
+
 			systemNotify.setVisible(false);
 			systemNotify.dispose();
 			systemNotify = null;
@@ -267,14 +267,14 @@ public class AutoLab extends Thread
 			Map.Entry<String, Thread> me2 = (Map.Entry<String, Thread>) it2.next();
 
 			((ProdLine) me2.getValue()).prodLineNotify.setExtendedState(JFrame.ICONIFIED);
-			
+
 			((ProdLine) me2.getValue()).prodLinePreview.setExtendedState(JFrame.ICONIFIED);
 
 		}
-		
+
 		systemNotify.setExtendedState(JFrame.ICONIFIED);
 	}
-	
+
 	public static synchronized void saveWindowLayouts()
 	{
 		Set<Entry<String, Thread>> entrySet2 = threadList_ProdLine.entrySet();
@@ -285,29 +285,29 @@ public class AutoLab extends Thread
 			Map.Entry<String, Thread> me2 = (Map.Entry<String, Thread>) it2.next();
 
 			JUtility.saveWindowLayout(((ProdLine) me2.getValue()).prodLineNotify);
-			
+
 			JUtility.saveWindowLayout(((ProdLine) me2.getValue()).prodLinePreview);
 
 		}
-		
+
 		JUtility.saveWindowLayout(systemNotify);
 
 	}
-	
+
 	public static synchronized void restoreAll()
 	{
 		Set<Entry<String, Thread>> entrySet2 = threadList_ProdLine.entrySet();
 		Iterator<Entry<String, Thread>> it2 = entrySet2.iterator();
-		
+
 		systemNotify.setExtendedState(JFrame.NORMAL);
-		
+
 		while (it2.hasNext())
 		{
 
 			Map.Entry<String, Thread> me2 = (Map.Entry<String, Thread>) it2.next();
 
 			((ProdLine) me2.getValue()).prodLineNotify.setExtendedState(JFrame.NORMAL);
-			
+
 			((ProdLine) me2.getValue()).prodLinePreview.setExtendedState(JFrame.NORMAL);
 
 		}
@@ -420,7 +420,7 @@ public class AutoLab extends Thread
 	{
 		((ProdLine) threadList_ProdLine.get(uuid)).print1.setData(data);
 	}
-	
+
 	public static synchronized void set_PreviewData(String uuid, String data)
 	{
 		if (AutoLab.config.isLabelaryEnabled() == true)
