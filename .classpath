@@ -20,8 +20,8 @@
 	<classpathentry kind="lib" path="lib/commons-text-1.15.0.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta.activation-api-2.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta.mail-api-2.1.5.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-api-2.25.3.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-core-2.25.3.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-api-2.25.4.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-core-2.25.4.jar"/>
 	<classpathentry kind="lib" path="lib/opencsv-5.12.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
