@@ -31,6 +31,7 @@ public class TrayIconSystemInfo
 	private MenuItem menuItemEmailConfig = new MenuItem(JRes.getText("email_config_to_support"));
 	private MenuItem menuItemEmailLogs = new MenuItem(JRes.getText("email_logs_to_support"));
 	private MenuItem menuItemSYSINFO = new MenuItem(JRes.getText("system_information"));
+	private MenuItem menuItemLICENCES = new MenuItem(JRes.getText("licence_information"));
 	private MenuItem menuItemMINIMIZE = new MenuItem(JRes.getText("minimize_all"));
 	private MenuItem menuItemRESTORE = new MenuItem(JRes.getText("restore_all"));
 	private MenuItem menuItemSaveLayout = new MenuItem(JRes.getText("save_layout"));
@@ -39,6 +40,7 @@ public class TrayIconSystemInfo
 
 	private JDialogSysInfo dialogSysInfo;
 	private JDialogAbout dialogAbout;
+	private JDialogLicenses dialogLicenses;
 
 	private static String OS = System.getProperty("os.name", "unknown").toLowerCase(Locale.ROOT);
 
@@ -110,8 +112,19 @@ public class TrayIconSystemInfo
 					dialogAbout = new JDialogAbout();
 					dialogAbout.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				}
-				
+
 				dialogAbout.setVisible(true);
+			}
+
+			if (e.getSource().equals(menuItemLICENCES))
+			{
+				if (dialogLicenses == null)
+				{
+					dialogLicenses = new JDialogLicenses();
+					dialogLicenses.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				}
+
+				dialogLicenses.setVisible(true);
 			}
 
 			if (e.getSource().equals(menuItemQUIT))
@@ -167,6 +180,7 @@ public class TrayIconSystemInfo
 
 			popup.add(menuItemABOUT);
 			popup.add(menuItemSYSINFO);
+			popup.add(menuItemLICENCES);
 			popup.add(menuItemEmailConfig);
 			popup.add(menuItemEmailLogs);
 			popup.add(menuItemMINIMIZE);
@@ -181,6 +195,7 @@ public class TrayIconSystemInfo
 			menuItemRESTORE.addActionListener(listener);
 			menuItemSaveLayout.addActionListener(listener);
 			menuItemSYSINFO.addActionListener(listener);
+			menuItemLICENCES.addActionListener(listener);
 
 			menuItemQUIT.addActionListener(listener);
 
