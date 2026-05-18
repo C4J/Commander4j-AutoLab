@@ -1,6 +1,6 @@
 package com.commander4j.modbus;
 
-import java.io.IOException;
+import java.time.Duration;
 import java.util.Calendar;
 
 import com.commander4j.autolab.AutoLab;
@@ -12,13 +12,23 @@ import com.commander4j.resources.JRes;
 import com.commander4j.utils.JUtility;
 import com.commander4j.utils.JWait;
 import org.apache.logging.log4j.Logger;
-import de.re.easymodbus.exceptions.ModbusException;
-import de.re.easymodbus.modbusclient.ModbusClient;
+import com.digitalpetri.modbus.client.ModbusTcpClient;
+import com.digitalpetri.modbus.exceptions.ModbusException;
+import com.digitalpetri.modbus.pdu.ReadCoilsRequest;
+import com.digitalpetri.modbus.pdu.ReadCoilsResponse;
+import com.digitalpetri.modbus.tcp.client.NettyTcpClientTransport;
 
 public class Modbus extends Thread
 {
 
-	private ModbusClient modbusClient;
+	// Modbus unit identifier (a.k.a. slave / station address). EasyModbus left
+	// this field at 0 when it was never set explicitly, which is how the
+	// previous version of this application ran - so 0 reproduces the original
+	// behaviour exactly. If a Modbus-to-serial gateway is ever placed in front
+	// of a device this will need to become a per-line config value.
+	private static final int UNIT_ID = 0;
+
+	private ModbusTcpClient modbusClient;
 	private boolean run = true;
 	private Boolean currentValue = false;
 	private Boolean previousValue = false;
@@ -56,7 +66,6 @@ public class Modbus extends Thread
 		this.ssccSequenceFilename = ssccSequenceFilename;
 		this.printOnValue = printOnValue;
 		setName("Modbus " + name + " (" + ipAddress + ") [Coil " + address + "]");
-		this.modbusClient = new ModbusClient();
 		logger.debug("[" + getUuid() + "] {" + getName() + "} Instance Created.");
 	}
 
@@ -118,7 +127,7 @@ public class Modbus extends Thread
 	{
 		return timeOut;
 	}
-	
+
 	public int getRetryDelay()
 	{
 		return retryDelay;
@@ -128,7 +137,7 @@ public class Modbus extends Thread
 	{
 		this.timeOut = timeOut;
 	}
-	
+
 	public void setRetryDelay(int retryDelay)
 	{
 		this.retryDelay = retryDelay;
@@ -143,16 +152,15 @@ public class Modbus extends Thread
 		else
 		{
 			run = false;
-			if (modbusClient.isConnected())
+			if (modbusClient != null && modbusClient.isConnected())
 			{
 				try
 				{
 					appendNotification(JRes.getText("modbus_disconnecting_from") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
-					modbusClient.Disconnect();
+					modbusClient.disconnect();
 				}
-				catch (IOException e)
+				catch (ModbusException e)
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -172,25 +180,36 @@ public class Modbus extends Thread
 
 			try
 			{
-				if (modbusClient.isConnected())
+				if (modbusClient != null && modbusClient.isConnected())
 				{
 					try
 					{
 						appendNotification(JRes.getText("modbus_disconnecting_from") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
-						modbusClient.Disconnect();
+						modbusClient.disconnect();
 					}
-					catch (IOException e1)
+					catch (ModbusException e1)
 					{
-						logger.debug("[" + getUuid() + "] {" + getName() + "} IOException " + e1.getLocalizedMessage());
+						logger.debug("[" + getUuid() + "] {" + getName() + "} ModbusException " + e1.getLocalizedMessage());
 					}
 				}
 
 				appendNotification(JRes.getText("modbus_attempting_connection_to_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
 
-				modbusClient.setipAddress(getIpAddress());
-				modbusClient.setPort(getPortNumber());
-				modbusClient.setConnectionTimeout(getTimeOut());
-				modbusClient.Connect();
+				// Build a fresh transport + client for this connection attempt.
+				// connectPersistent(false) keeps the explicit connect/disconnect
+				// lifecycle owned by this loop rather than the transport's own
+				// auto-reconnect state machine. The transport reuses a shared
+				// Netty event loop, so creating one per attempt does not leak
+				// threads.
+				NettyTcpClientTransport transport = NettyTcpClientTransport.create(cfg ->
+				{
+					cfg.setHostname(getIpAddress());
+					cfg.setPort(getPortNumber());
+					cfg.setConnectTimeout(Duration.ofMillis(getTimeOut()));
+					cfg.setConnectPersistent(false);
+				});
+				modbusClient = ModbusTcpClient.create(transport);
+				modbusClient.connect();
 
 				currentValue = false;
 				previousValue = false;
@@ -205,7 +224,8 @@ public class Modbus extends Thread
 
 					try
 					{
-						currentValue = modbusClient.ReadCoils(address - 1, 1)[0];
+						ReadCoilsResponse coilResponse = modbusClient.readCoils(UNIT_ID, new ReadCoilsRequest(address - 1, 1));
+						currentValue = (coilResponse.coils()[0] & 0x01) != 0;
 
 						if (currentValue != previousValue)
 						{
@@ -224,8 +244,9 @@ public class Modbus extends Thread
 									{
 										AutoLab.setPrintProperties(getUuid(), AutoLab.getDataSet_Field(getUuid(), "IP_ADDRESS"), Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "PORT")));
 
-										boolean semiPalletCoilValue = modbusClient.ReadCoils(semiPalletAddress - 1, 1)[0];
-										
+										ReadCoilsResponse semiPalletResponse = modbusClient.readCoils(UNIT_ID, new ReadCoilsRequest(semiPalletAddress - 1, 1));
+										boolean semiPalletCoilValue = (semiPalletResponse.coils()[0] & 0x01) != 0;
+
 										if (semiPalletCoilValue==false)
 										{
 											appendNotification(JRes.getText("SEMIP = false"));
@@ -238,7 +259,7 @@ public class Modbus extends Thread
 											AutoLab.setDataSet_FieldValue(getUuid(), "SSCC_PER_PALLET", AutoLab.config.getSSCCPerSemiPallet());
 											AutoLab.setDataSet_FieldValue(getUuid(), "LABELS_PER_SSCC", AutoLab.config.getLabelsPerSemiSSCC());
 										}
-										
+
 										appendNotification(JRes.getText("sscc_per_pallet")+ " " + AutoLab.getDataSet_Field(getUuid(), "SSCC_PER_PALLET"));
 										appendNotification(JRes.getText("labels_per_sscc")+ " " + AutoLab.getDataSet_Field(getUuid(), "LABELS_PER_SSCC"));
 
@@ -273,8 +294,8 @@ public class Modbus extends Thread
 
 											sscc = AutoLab.get_SSCC_Sequence(getSsccSequenceFilename());
 											AutoLab.setDataSet_FieldValue(uuid, "SSCC", sscc);
-											
-												
+
+
 												if (y == 0)
 												{
 
@@ -302,9 +323,9 @@ public class Modbus extends Thread
 													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "--------------------------------------------------------------------------------------------------------------");
 													logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SSCC                 = " + sscc + " <<REPEAT>>");
 												}
-												
+
 												appendNotification(JRes.getText("preparing_sscc")+" " + (y + 1) + " " + JRes.getText("of") + " " + SSCCPerPallet);
-												
+
 												for (int x = 0; x < labelsPerSSCC; x++)
 												{
 													while (AutoLab.isDataReady(getUuid()))
@@ -350,9 +371,9 @@ public class Modbus extends Thread
 													}
 
 												}
-												
+
 												inProgress = false;
-												
+
 												if (AutoLab.isDataReady(getUuid()) == false)
 												{
 													appendNotification(JRes.getText("print_confirmation_received"));
@@ -371,11 +392,11 @@ public class Modbus extends Thread
 						}
 						Thread.sleep(250);
 					}
-					catch (IOException e1)
+					catch (ModbusException e1)
 					{
-						logger.debug("[" + getUuid() + "] {" + getName() + "} IOException during read " + e1.getLocalizedMessage());
+						logger.debug("[" + getUuid() + "] {" + getName() + "} ModbusException during read " + e1.getLocalizedMessage());
 						appendNotification(JRes.getText("modbus_cannot_connect_to_device") + " [" + ":" + getPortNumber() + "] Coil " + address);
-						modbusClient.Disconnect();
+						modbusClient.disconnect();
 					}
 
 				}
@@ -384,31 +405,25 @@ public class Modbus extends Thread
 				{
 					try
 					{
-						modbusClient.Disconnect();
+						modbusClient.disconnect();
 						appendNotification(JRes.getText("modbus_disconnected_from_device") + " [" + ":" + getPortNumber() + "] Coil " + address);
 					}
-					catch (IOException e1)
+					catch (ModbusException e1)
 					{
-						logger.debug("[" + getUuid() + "] {" + getName() + "} IOException " + e1.getLocalizedMessage());
+						logger.debug("[" + getUuid() + "] {" + getName() + "} ModbusException " + e1.getLocalizedMessage());
 					}
 				}
 			}
 
+			// All digitalpetri Modbus failures (connection refused, host
+			// unreachable, timeouts and device error responses) subclass
+			// ModbusException. The retry delay - which previously only guarded
+			// the SocketException branch - is applied here so a down device is
+			// not hammered with reconnect attempts.
 			catch (ModbusException e)
 			{
 				logger.debug("[" + getUuid() + "] {" + getName() + "} " + "ModbusException " + e.getLocalizedMessage());
-			}
 
-			catch (java.net.UnknownHostException e)
-			{
-				logger.debug("[" + getUuid() + "] {" + getName() + "} " + "UnknownHostException " + e.getLocalizedMessage());
-			}
-
-			catch (java.net.SocketException e)
-			{
-				logger.debug("[" + getUuid() + "] {" + getName() + "} " + "SocketException " + e.getLocalizedMessage());
-				
-				//wait.milliSec(getRetryDelay());
 				try
 				{
 					Thread.sleep(getRetryDelay());
@@ -416,17 +431,11 @@ public class Modbus extends Thread
 				catch (InterruptedException e1)
 				{
 				}
-				
+
 				if (run == false)
 				{
 					break;
 				}
-
-			}
-
-			catch (java.io.IOException e)
-			{
-				logger.debug("[" + getUuid() + "] {" + getName() + "} " + "IOException " + e.getLocalizedMessage());
 			}
 			catch (InterruptedException e)
 			{

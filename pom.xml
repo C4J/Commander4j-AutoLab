@@ -114,6 +114,15 @@
 			<version>5.12.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.digitalpetri.modbus/modbus-tcp -->
+		<!-- Transitively pulls in modbus (core), netty-*, slf4j-api, strict-machine
+		     and netty-channel-fsm. Replaces the unmaintained EasyModbusJava library. -->
+		<dependency>
+			<groupId>com.digitalpetri.modbus</groupId>
+			<artifactId>modbus-tcp</artifactId>
+			<version>2.1.5</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
