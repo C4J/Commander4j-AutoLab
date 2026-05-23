@@ -4,6 +4,9 @@
 # Log file
 *.log
 
+# install4j file
+*.install4j
+
 # BlueJ files
 *.ctxt
 
