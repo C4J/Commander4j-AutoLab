@@ -7,6 +7,7 @@ public class ProdLineDefinition
 	String modbus_Name = "";
 	String modbus_IPAddress = "";
 	String modbus_Port = "";
+	String modbus_UnitID = "";
 	String modbus_Coil_Address = "";
 	String semiPallet_modbus_Coil_Address = "";
 	String modbus_Timeout = "";
@@ -55,6 +56,21 @@ public class ProdLineDefinition
 	public void setModbus_Port(String modbus_Port)
 	{
 		this.modbus_Port = modbus_Port;
+	}
+	public String getModbus_UnitID()
+	{
+		return modbus_UnitID;
+	}
+	public void setModbus_UnitID(String modbus_UnitID)
+	{
+		// Backwards compatibility: a config.xml from before the <unitID> element
+		// existed (or one with a blank/whitespace value) defaults to unit 0,
+		// which reproduces the original hardcoded behaviour.
+		if (modbus_UnitID == null || modbus_UnitID.trim().isEmpty())
+		{
+			modbus_UnitID = "0";
+		}
+		this.modbus_UnitID = modbus_UnitID;
 	}
 	public String getModbus_Coil_Address()
 	{

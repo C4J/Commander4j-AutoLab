@@ -179,6 +179,9 @@ public class Config
 				prodLine.setModbus_Port(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/portNumber"));
 				logger.debug("         Modbus Port          [" + prodLine.getModbus_Port() + "]");
 
+				prodLine.setModbus_UnitID(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/unitID"));
+				logger.debug("         Modbus Unit ID       [" + prodLine.getModbus_UnitID() + "]");
+
 				prodLine.setModbus_Coil_Address(xmlDoc.findXPath("/config/productionLines/productionLine[" + String.valueOf(seq) + "]/modbus/coilAddress"));
 				logger.debug("         Modbus Coil          [" + prodLine.getModbus_Coil_Address() + "]");
 				

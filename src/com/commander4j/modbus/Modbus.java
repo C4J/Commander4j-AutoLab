@@ -21,12 +21,11 @@ import com.digitalpetri.modbus.tcp.client.NettyTcpClientTransport;
 public class Modbus extends Thread
 {
 
-	// Modbus unit identifier (a.k.a. slave / station address). EasyModbus left
-	// this field at 0 when it was never set explicitly, which is how the
-	// previous version of this application ran - so 0 reproduces the original
-	// behaviour exactly. If a Modbus-to-serial gateway is ever placed in front
-	// of a device this will need to become a per-line config value.
-	private static final int UNIT_ID = 0;
+	// Modbus unit identifier (a.k.a. slave / station address). This is now a
+	// per-line config value read from <modbus><unitID> in config.xml. A config
+	// file predating that element (or with a blank value) defaults to 0, which
+	// reproduces the original hardcoded EasyModbus behaviour exactly.
+	private final int unitID;
 
 	private ModbusTcpClient modbusClient;
 	private boolean run = true;
@@ -54,13 +53,14 @@ public class Modbus extends Thread
 	private ProcDec_XML prodDec = new ProcDec_XML();
 	private String lastMessage = "";
 
-	public Modbus(String uuid, String name, String ipAddress, int portNumber, int timeOut, int address, boolean printOnValue, String ssccSequenceFilename,int semiPalletAddress,int retryDelay)
+	public Modbus(String uuid, String name, String ipAddress, int portNumber, int timeOut, int address, boolean printOnValue, String ssccSequenceFilename,int semiPalletAddress,int retryDelay,int unitID)
 	{
 		this.uuid = uuid;
 		this.ipAddress = ipAddress;
 		this.portNumber = portNumber;
 		this.timeOut = timeOut;
 		this.retryDelay = retryDelay;
+		this.unitID = unitID;
 		this.address = address;
 		this.semiPalletAddress = semiPalletAddress;
 		this.ssccSequenceFilename = ssccSequenceFilename;
@@ -156,7 +156,7 @@ public class Modbus extends Thread
 			{
 				try
 				{
-					appendNotification(JRes.getText("modbus_disconnecting_from") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
+					appendNotification(JRes.getText("modbus_disconnecting_from") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 					modbusClient.disconnect();
 				}
 				catch (ModbusException e)
@@ -184,7 +184,7 @@ public class Modbus extends Thread
 				{
 					try
 					{
-						appendNotification(JRes.getText("modbus_disconnecting_from") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
+						appendNotification(JRes.getText("modbus_disconnecting_from") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 						modbusClient.disconnect();
 					}
 					catch (ModbusException e1)
@@ -193,7 +193,7 @@ public class Modbus extends Thread
 					}
 				}
 
-				appendNotification(JRes.getText("modbus_attempting_connection_to_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
+				appendNotification(JRes.getText("modbus_attempting_connection_to_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 
 				// Build a fresh transport + client for this connection attempt.
 				// connectPersistent(false) keeps the explicit connect/disconnect
@@ -216,7 +216,7 @@ public class Modbus extends Thread
 
 				if (modbusClient.isConnected())
 				{
-					appendNotification(JRes.getText("modbus_connected_to_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Coil " + address);
+					appendNotification(JRes.getText("modbus_connected_to_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 				}
 
 				while (modbusClient.isConnected() && (run == true))
@@ -224,7 +224,7 @@ public class Modbus extends Thread
 
 					try
 					{
-						ReadCoilsResponse coilResponse = modbusClient.readCoils(UNIT_ID, new ReadCoilsRequest(address - 1, 1));
+						ReadCoilsResponse coilResponse = modbusClient.readCoils(unitID, new ReadCoilsRequest(address - 1, 1));
 						currentValue = (coilResponse.coils()[0] & 0x01) != 0;
 
 						if (currentValue != previousValue)
@@ -244,7 +244,7 @@ public class Modbus extends Thread
 									{
 										AutoLab.setPrintProperties(getUuid(), AutoLab.getDataSet_Field(getUuid(), "IP_ADDRESS"), Integer.valueOf(AutoLab.getDataSet_Field(getUuid(), "PORT")));
 
-										ReadCoilsResponse semiPalletResponse = modbusClient.readCoils(UNIT_ID, new ReadCoilsRequest(semiPalletAddress - 1, 1));
+										ReadCoilsResponse semiPalletResponse = modbusClient.readCoils(unitID, new ReadCoilsRequest(semiPalletAddress - 1, 1));
 										boolean semiPalletCoilValue = (semiPalletResponse.coils()[0] & 0x01) != 0;
 
 										if (semiPalletCoilValue==false)
@@ -395,7 +395,10 @@ public class Modbus extends Thread
 					catch (ModbusException e1)
 					{
 						logger.debug("[" + getUuid() + "] {" + getName() + "} ModbusException during read " + e1.getLocalizedMessage());
-						appendNotification(JRes.getText("modbus_cannot_connect_to_device") + " [" + ":" + getPortNumber() + "] Coil " + address);
+						// The TCP connection is up but the device did not answer this
+						// read (e.g. a unit-ID mismatch, or the coil/register is out of
+						// range). This is NOT a connection failure - report it as such.
+						appendNotification(JRes.getText("modbus_no_response_from_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 						modbusClient.disconnect();
 					}
 
@@ -406,7 +409,7 @@ public class Modbus extends Thread
 					try
 					{
 						modbusClient.disconnect();
-						appendNotification(JRes.getText("modbus_disconnected_from_device") + " [" + ":" + getPortNumber() + "] Coil " + address);
+						appendNotification(JRes.getText("modbus_disconnected_from_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 					}
 					catch (ModbusException e1)
 					{
@@ -423,6 +426,10 @@ public class Modbus extends Thread
 			catch (ModbusException e)
 			{
 				logger.debug("[" + getUuid() + "] {" + getName() + "} " + "ModbusException " + e.getLocalizedMessage());
+				// Reached when the connect() itself failed (connection refused, host
+				// unreachable, connect timeout) - a genuine connection error, so the
+				// "cannot connect" message belongs here.
+				appendNotification(JRes.getText("modbus_cannot_connect_to_device") + " [" + getIpAddress() + ":" + getPortNumber() + "] Unit " + unitID + " Coil " + address);
 
 				try
 				{
