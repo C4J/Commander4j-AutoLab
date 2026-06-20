@@ -24,14 +24,15 @@
 	<classpathentry kind="lib" path="lib/devonly/i4jruntime.jar"/>
 	<classpathentry kind="lib" path="lib/modbus-2.1.5.jar"/>
 	<classpathentry kind="lib" path="lib/modbus-tcp-2.1.5.jar"/>
-	<classpathentry kind="lib" path="lib/netty-buffer-4.1.131.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-buffer-4.2.15.Final.jar"/>
 	<classpathentry kind="lib" path="lib/netty-channel-fsm-1.0.2.jar"/>
-	<classpathentry kind="lib" path="lib/netty-codec-4.1.131.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-common-4.1.131.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-handler-4.1.131.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-resolver-4.1.131.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-transport-4.1.131.Final.jar"/>
-	<classpathentry kind="lib" path="lib/netty-transport-native-unix-common-4.1.131.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-codec-4.2.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-codec-base-4.2.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-common-4.2.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-handler-4.2.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-resolver-4.2.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-transport-4.2.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/netty-transport-native-unix-common-4.2.15.Final.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-2.0.17.jar"/>
 	<classpathentry kind="lib" path="lib/strict-machine-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>

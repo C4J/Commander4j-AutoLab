@@ -90,7 +90,7 @@
 
         <library>
             <description>Netty</description>
-            <version>4.1.131.Final</version>
+            <version>4.2.15.Final</version>
             <type>Apache License 2.0</type>
         </library>
 
