@@ -60,7 +60,7 @@ public class JDialogLicenses extends JDialog
 		setTitle(JRes.getText("licence_information"));
 		setResizable(false);
 		setAlwaysOnTop(true);
-		setSize(767, 599);
+		setSize(822, 599);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		Rectangle window = getBounds();
 		setLocation((screen.width - window.width) / 2, (screen.height - window.height) / 2);
@@ -77,7 +77,7 @@ public class JDialogLicenses extends JDialog
 		contentPanel.add(lblHeader);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 24, 745, 492);
+		scrollPane.setBounds(6, 24, 810, 492);
 		contentPanel.add(scrollPane);
 
 		list.setFont(listFont);
@@ -102,7 +102,7 @@ public class JDialogLicenses extends JDialog
 		scrollPane.setViewportView(list);
 
 		JButton okClose = new JButton(JRes.getText("close"));
-		okClose.setBounds(330, 524, 106, 29);
+		okClose.setBounds(373, 524, 106, 29);
 		okClose.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
